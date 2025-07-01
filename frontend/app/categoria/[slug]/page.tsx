@@ -1,9 +1,15 @@
-import Link from "next/link"
-import { ArrowLeft, Plus, Search } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Badge } from "@/components/ui/badge"
+import Link from "next/link";
+import { ArrowLeft, Plus, Search } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Badge } from "@/components/ui/badge";
 
 // Datos de ejemplo
 const productosEjemplo = [
@@ -47,7 +53,7 @@ const productosEjemplo = [
     tipo: "generico",
     categoria: "venenos",
   },
-]
+];
 
 const categoriasNombres = {
   alimentos: "Alimentos",
@@ -56,14 +62,31 @@ const categoriasNombres = {
   pesca: "Pesca",
   mimbre: "Mimbre",
   otros: "Otros",
+};
+
+export async function generateStaticParams() {
+  return [
+    { slug: "alimentos" },
+    { slug: "ferreteria" },
+    { slug: "venenos" },
+    { slug: "pesca" },
+    { slug: "mimbre" },
+    { slug: "otros" },
+  ];
 }
 
-export default function CategoriaPage({ params }: { params: { slug: string } }) {
-  const categoria = params.slug
-  const nombreCategoria = categoriasNombres[categoria as keyof typeof categoriasNombres] || "Categoría"
+export default function CategoriaPage({
+  params,
+}: {
+  params: { slug: string };
+}) {
+  const categoria = params.slug;
+  const nombreCategoria =
+    categoriasNombres[categoria as keyof typeof categoriasNombres] ||
+    "Categoría";
 
   // Filtrar productos por categoría
-  const productos = productosEjemplo.filter((p) => p.categoria === categoria)
+  const productos = productosEjemplo.filter((p) => p.categoria === categoria);
 
   return (
     <div className="min-h-screen bg-background">
@@ -71,12 +94,18 @@ export default function CategoriaPage({ params }: { params: { slug: string } }) 
         <div className="max-w-7xl mx-auto">
           <div className="flex items-center gap-6 mb-6">
             <Link href="/">
-              <Button variant="ghost" size="lg" className="text-foreground hover:text-accent">
+              <Button
+                variant="ghost"
+                size="lg"
+                className="text-foreground hover:text-accent"
+              >
                 <ArrowLeft className="w-5 h-5 mr-3" />
                 Volver al Inicio
               </Button>
             </Link>
-            <h1 className="text-4xl font-bold text-foreground">{nombreCategoria}</h1>
+            <h1 className="text-4xl font-bold text-foreground">
+              {nombreCategoria}
+            </h1>
           </div>
 
           <div className="flex flex-col lg:flex-row gap-6">
@@ -125,31 +154,60 @@ export default function CategoriaPage({ params }: { params: { slug: string } }) 
             <table className="w-full">
               <thead className="bg-muted/30">
                 <tr>
-                  <th className="text-left p-6 font-bold text-foreground text-lg">Producto</th>
-                  <th className="text-left p-6 font-bold text-foreground text-lg">Marca</th>
-                  <th className="text-left p-6 font-bold text-foreground text-lg">Peso</th>
-                  <th className="text-left p-6 font-bold text-foreground text-lg">Precio</th>
-                  <th className="text-left p-6 font-bold text-foreground text-lg">Stock</th>
-                  <th className="text-left p-6 font-bold text-foreground text-lg">Tipo</th>
-                  <th className="text-left p-6 font-bold text-foreground text-lg">Acciones</th>
+                  <th className="text-left p-6 font-bold text-foreground text-lg">
+                    Producto
+                  </th>
+                  <th className="text-left p-6 font-bold text-foreground text-lg">
+                    Marca
+                  </th>
+                  <th className="text-left p-6 font-bold text-foreground text-lg">
+                    Peso
+                  </th>
+                  <th className="text-left p-6 font-bold text-foreground text-lg">
+                    Precio
+                  </th>
+                  <th className="text-left p-6 font-bold text-foreground text-lg">
+                    Stock
+                  </th>
+                  <th className="text-left p-6 font-bold text-foreground text-lg">
+                    Tipo
+                  </th>
+                  <th className="text-left p-6 font-bold text-foreground text-lg">
+                    Acciones
+                  </th>
                 </tr>
               </thead>
               <tbody>
                 {productos.map((producto) => (
-                  <tr key={producto.id} className="border-t-2 border-border hover:bg-muted/20 transition-colors">
+                  <tr
+                    key={producto.id}
+                    className="border-t-2 border-border hover:bg-muted/20 transition-colors"
+                  >
                     <td className="p-6">
-                      <div className="font-semibold text-foreground text-lg">{producto.nombre}</div>
+                      <div className="font-semibold text-foreground text-lg">
+                        {producto.nombre}
+                      </div>
                     </td>
-                    <td className="p-6 text-muted-foreground text-lg">{producto.marca}</td>
-                    <td className="p-6 text-muted-foreground text-lg">{producto.peso}</td>
+                    <td className="p-6 text-muted-foreground text-lg">
+                      {producto.marca}
+                    </td>
+                    <td className="p-6 text-muted-foreground text-lg">
+                      {producto.peso}
+                    </td>
                     <td className="p-6">
-                      <span className="font-bold text-success text-xl">${producto.precio.toLocaleString()}</span>
+                      <span className="font-bold text-success text-xl">
+                        ${producto.precio.toLocaleString()}
+                      </span>
                     </td>
                     <td className="p-6">
                       <Badge
-                        variant={producto.stock > 10 ? "default" : "destructive"}
+                        variant={
+                          producto.stock > 10 ? "default" : "destructive"
+                        }
                         className={`text-base px-4 py-2 ${
-                          producto.stock > 10 ? "bg-success text-white" : "bg-destructive text-white"
+                          producto.stock > 10
+                            ? "bg-success text-white"
+                            : "bg-destructive text-white"
                         }`}
                       >
                         {producto.stock} unidades
@@ -157,12 +215,20 @@ export default function CategoriaPage({ params }: { params: { slug: string } }) 
                     </td>
                     <td className="p-6">
                       <Badge
-                        variant={producto.tipo === "alta_genetica" ? "default" : "secondary"}
+                        variant={
+                          producto.tipo === "alta_genetica"
+                            ? "default"
+                            : "secondary"
+                        }
                         className={`text-base px-4 py-2 ${
-                          producto.tipo === "alta_genetica" ? "bg-accent text-white" : "bg-muted text-foreground"
+                          producto.tipo === "alta_genetica"
+                            ? "bg-accent text-white"
+                            : "bg-muted text-foreground"
                         }`}
                       >
-                        {producto.tipo === "alta_genetica" ? "Alta Genética" : "Genérico"}
+                        {producto.tipo === "alta_genetica"
+                          ? "Alta Genética"
+                          : "Genérico"}
                       </Badge>
                     </td>
                     <td className="p-6">
@@ -185,7 +251,9 @@ export default function CategoriaPage({ params }: { params: { slug: string } }) 
 
         {productos.length === 0 && (
           <div className="text-center py-20">
-            <p className="text-muted-foreground text-2xl mb-8">No hay productos en esta categoría</p>
+            <p className="text-muted-foreground text-2xl mb-8">
+              No hay productos en esta categoría
+            </p>
             <Link href="/producto/nuevo">
               <Button className="bg-success hover:bg-success/90 text-white px-8 py-4 text-lg">
                 <Plus className="w-6 h-6 mr-3" />
@@ -196,5 +264,5 @@ export default function CategoriaPage({ params }: { params: { slug: string } }) 
         )}
       </main>
     </div>
-  )
+  );
 }
