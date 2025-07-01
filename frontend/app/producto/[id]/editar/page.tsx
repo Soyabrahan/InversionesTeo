@@ -1,10 +1,16 @@
-import Link from "next/link"
-import { ArrowLeft, Save, Trash2 } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Textarea } from "@/components/ui/textarea"
+import Link from "next/link";
+import { ArrowLeft, Save, Trash2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
 
 // Datos de ejemplo para el producto
 const producto = {
@@ -17,22 +23,37 @@ const producto = {
   stockMinimo: 5,
   tipo: "alta_genetica",
   categoria: "alimentos",
-  descripcion: "Alimento balanceado premium para perros adultos de todas las razas",
+  descripcion:
+    "Alimento balanceado premium para perros adultos de todas las razas",
+};
+
+export async function generateStaticParams() {
+  return [{ id: "1" }, { id: "2" }, { id: "3" }, { id: "4" }];
 }
 
-export default function EditarProductoPage({ params }: { params: { id: string } }) {
+export default function EditarProductoPage({
+  params,
+}: {
+  params: { id: string };
+}) {
   return (
     <div className="min-h-screen bg-background">
       <header className="bg-card border-b-2 border-border p-8">
         <div className="max-w-5xl mx-auto">
           <div className="flex items-center gap-6">
             <Link href="/">
-              <Button variant="ghost" size="lg" className="text-foreground hover:text-accent">
+              <Button
+                variant="ghost"
+                size="lg"
+                className="text-foreground hover:text-accent"
+              >
                 <ArrowLeft className="w-5 h-5 mr-3" />
                 Volver
               </Button>
             </Link>
-            <h1 className="text-4xl font-bold text-foreground">Editar Producto</h1>
+            <h1 className="text-4xl font-bold text-foreground">
+              Editar Producto
+            </h1>
           </div>
         </div>
       </header>
@@ -42,7 +63,10 @@ export default function EditarProductoPage({ params }: { params: { id: string } 
           <form className="space-y-10">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
               <div className="space-y-3">
-                <Label htmlFor="nombre" className="text-lg font-semibold text-foreground">
+                <Label
+                  htmlFor="nombre"
+                  className="text-lg font-semibold text-foreground"
+                >
                   Nombre del Producto *
                 </Label>
                 <Input
@@ -53,7 +77,10 @@ export default function EditarProductoPage({ params }: { params: { id: string } 
               </div>
 
               <div className="space-y-3">
-                <Label htmlFor="categoria" className="text-lg font-semibold text-foreground">
+                <Label
+                  htmlFor="categoria"
+                  className="text-lg font-semibold text-foreground"
+                >
                   Categoría *
                 </Label>
                 <Select defaultValue={producto.categoria}>
@@ -72,7 +99,10 @@ export default function EditarProductoPage({ params }: { params: { id: string } 
               </div>
 
               <div className="space-y-3">
-                <Label htmlFor="marca" className="text-lg font-semibold text-foreground">
+                <Label
+                  htmlFor="marca"
+                  className="text-lg font-semibold text-foreground"
+                >
                   Marca *
                 </Label>
                 <Input
@@ -83,7 +113,10 @@ export default function EditarProductoPage({ params }: { params: { id: string } 
               </div>
 
               <div className="space-y-3">
-                <Label htmlFor="tipo" className="text-lg font-semibold text-foreground">
+                <Label
+                  htmlFor="tipo"
+                  className="text-lg font-semibold text-foreground"
+                >
                   Tipo *
                 </Label>
                 <Select defaultValue={producto.tipo}>
@@ -98,7 +131,10 @@ export default function EditarProductoPage({ params }: { params: { id: string } 
               </div>
 
               <div className="space-y-3">
-                <Label htmlFor="peso" className="text-lg font-semibold text-foreground">
+                <Label
+                  htmlFor="peso"
+                  className="text-lg font-semibold text-foreground"
+                >
                   Peso
                 </Label>
                 <Input
@@ -109,7 +145,10 @@ export default function EditarProductoPage({ params }: { params: { id: string } 
               </div>
 
               <div className="space-y-3">
-                <Label htmlFor="precio" className="text-lg font-semibold text-foreground">
+                <Label
+                  htmlFor="precio"
+                  className="text-lg font-semibold text-foreground"
+                >
                   Precio *
                 </Label>
                 <Input
@@ -121,7 +160,10 @@ export default function EditarProductoPage({ params }: { params: { id: string } 
               </div>
 
               <div className="space-y-3">
-                <Label htmlFor="stock" className="text-lg font-semibold text-foreground">
+                <Label
+                  htmlFor="stock"
+                  className="text-lg font-semibold text-foreground"
+                >
                   Stock Actual *
                 </Label>
                 <Input
@@ -133,7 +175,10 @@ export default function EditarProductoPage({ params }: { params: { id: string } 
               </div>
 
               <div className="space-y-3">
-                <Label htmlFor="stock-minimo" className="text-lg font-semibold text-foreground">
+                <Label
+                  htmlFor="stock-minimo"
+                  className="text-lg font-semibold text-foreground"
+                >
                   Stock Mínimo
                 </Label>
                 <Input
@@ -146,7 +191,10 @@ export default function EditarProductoPage({ params }: { params: { id: string } 
             </div>
 
             <div className="space-y-3">
-              <Label htmlFor="descripcion" className="text-lg font-semibold text-foreground">
+              <Label
+                htmlFor="descripcion"
+                className="text-lg font-semibold text-foreground"
+              >
                 Descripción (Opcional)
               </Label>
               <Textarea
@@ -172,7 +220,10 @@ export default function EditarProductoPage({ params }: { params: { id: string } 
                 Eliminar Producto
               </Button>
               <Link href="/" className="flex-1">
-                <Button variant="ghost" className="h-16 w-full text-foreground hover:bg-muted text-lg">
+                <Button
+                  variant="ghost"
+                  className="h-16 w-full text-foreground hover:bg-muted text-lg"
+                >
                   Cancelar
                 </Button>
               </Link>
@@ -181,5 +232,5 @@ export default function EditarProductoPage({ params }: { params: { id: string } 
         </div>
       </main>
     </div>
-  )
+  );
 }
