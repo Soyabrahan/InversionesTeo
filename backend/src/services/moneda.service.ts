@@ -81,4 +81,39 @@ export class MonedaService {
       console.error('Error actualizando tasa BCV:', error);
     }
   }
+
+  async actualizarTasaBCVManual() {
+    try {
+      const url = 'https://pydolarve.org/api/v2/dollar';
+      const response$ = this.httpService.get(url);
+      const response = await lastValueFrom(response$);
+      const data = response.data;
+      if (
+        data &&
+        data.monitors &&
+        data.monitors.bcv &&
+        data.monitors.bcv.price
+      ) {
+        const nuevaTasa = parseFloat(data.monitors.bcv.price);
+        let bcv = await this.monedaRepository.findOne({ where: { id: 1 } });
+        if (bcv) {
+          bcv.tasa = nuevaTasa;
+          await this.monedaRepository.save(bcv);
+        } else {
+          bcv = this.monedaRepository.create({
+            id: 1,
+            nombre: 'bcv',
+            tasa: nuevaTasa,
+          });
+          await this.monedaRepository.save(bcv);
+        }
+        return bcv;
+      } else {
+        throw new Error('Tasa BCV no encontrada en la respuesta JSON');
+      }
+    } catch (error) {
+      console.error('Error actualizando tasa BCV:', error);
+      throw error;
+    }
+  }
 }

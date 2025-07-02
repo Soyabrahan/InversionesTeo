@@ -23,12 +23,18 @@ import {
   Moneda,
   Producto,
 } from "@/lib/services";
+import { CATEGORIAS } from "@/lib/categorias";
+import { useRouter } from "next/navigation";
 
 export default function ProductoEditarContent({ id }: { id: string }) {
   const [marcas, setMarcas] = useState<Marca[]>([]);
   const [tipos, setTipos] = useState<Tipo[]>([]);
   const [tasas, setTasas] = useState<Moneda[]>([]);
   const [producto, setProducto] = useState<Producto | null>(null);
+  const [categoria, setCategoria] = useState(producto?.categoria || "");
+  const router = useRouter();
+  const [mensaje, setMensaje] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     marcaService.getAll().then(setMarcas);
@@ -37,6 +43,33 @@ export default function ProductoEditarContent({ id }: { id: string }) {
     productoService.getById(Number(id)).then(setProducto);
   }, [id]);
 
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setMensaje(null);
+    setError(null);
+    const form = e.target as HTMLFormElement;
+    const nombre = (form.elements.namedItem("nombre") as HTMLInputElement)
+      .value;
+    const descripcion = (
+      form.elements.namedItem("descripcion") as HTMLInputElement
+    ).value;
+    const precioDolar = Number(
+      (form.elements.namedItem("precio") as HTMLInputElement).value
+    );
+    try {
+      const res = await fetch(`/api/productos/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ nombre, descripcion, precioDolar, categoria }),
+      });
+      if (!res.ok) throw new Error("Error al actualizar el producto");
+      setMensaje("Producto actualizado exitosamente");
+      // Opcional: router.back();
+    } catch (err) {
+      setError("Hubo un error al actualizar el producto");
+    }
+  };
+
   if (!producto) return <div className="p-8">Cargando producto...</div>;
 
   return (
@@ -44,16 +77,16 @@ export default function ProductoEditarContent({ id }: { id: string }) {
       <header className="bg-card border-b-2 border-border p-8">
         <div className="max-w-5xl mx-auto">
           <div className="flex items-center gap-6">
-            <Link href="/">
-              <Button
-                variant="ghost"
-                size="lg"
-                className="text-foreground hover:text-accent"
-              >
-                <ArrowLeft className="w-5 h-5 mr-3" />
-                Volver
-              </Button>
-            </Link>
+            <Button
+              variant="ghost"
+              size="lg"
+              className="text-foreground hover:text-accent"
+              type="button"
+              onClick={() => router.back()}
+            >
+              <ArrowLeft className="w-5 h-5 mr-3" />
+              Volver
+            </Button>
             <h1 className="text-4xl font-bold text-foreground">
               Editar Producto
             </h1>
@@ -63,7 +96,13 @@ export default function ProductoEditarContent({ id }: { id: string }) {
 
       <main className="max-w-5xl mx-auto p-8">
         <div className="bg-card rounded-2xl border-2 border-border p-10 shadow-xl">
-          <form className="space-y-10">
+          {mensaje && (
+            <div className="mb-4 text-success font-semibold">{mensaje}</div>
+          )}
+          {error && (
+            <div className="mb-4 text-destructive font-semibold">{error}</div>
+          )}
+          <form className="space-y-10" onSubmit={handleSubmit}>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
               <div className="space-y-3">
                 <Label
@@ -173,6 +212,27 @@ export default function ProductoEditarContent({ id }: { id: string }) {
                   defaultValue={producto.precioDolar}
                   className="h-14 text-lg bg-background border-2 border-border focus:border-accent"
                 />
+              </div>
+
+              <div className="space-y-3">
+                <Label
+                  htmlFor="categoria"
+                  className="text-lg font-semibold text-foreground"
+                >
+                  Categoría
+                </Label>
+                <Select value={categoria} onValueChange={setCategoria}>
+                  <SelectTrigger className="h-14 bg-background border-2 border-border">
+                    <SelectValue placeholder="Seleccionar categoría" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {CATEGORIAS.map((cat) => (
+                      <SelectItem key={cat} value={cat}>
+                        {cat.charAt(0).toUpperCase() + cat.slice(1)}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
             </div>
 

@@ -6,6 +6,7 @@ import {
   Param,
   Put,
   Delete,
+  HttpCode,
 } from '@nestjs/common';
 import { MonedaService } from '../services/moneda.service';
 
@@ -36,5 +37,12 @@ export class MonedaController {
   @Delete(':id')
   remove(@Param('id') id: number) {
     return this.monedaService.remove(id);
+  }
+
+  @Put('bcv/actualizar')
+  @HttpCode(200)
+  async actualizarBCV() {
+    const nueva = await this.monedaService.actualizarTasaBCVManual();
+    return nueva;
   }
 }

@@ -21,11 +21,17 @@ import {
   Tipo,
   Moneda,
 } from "@/lib/services";
+import { CATEGORIAS } from "@/lib/categorias";
+import { useRouter } from "next/navigation";
 
 export default function NuevoProductoPage() {
   const [marcas, setMarcas] = useState<Marca[]>([]);
   const [tipos, setTipos] = useState<Tipo[]>([]);
   const [tasas, setTasas] = useState<Moneda[]>([]);
+  const [categoria, setCategoria] = useState("");
+  const router = useRouter();
+  const [mensaje, setMensaje] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     marcaService.getAll().then(setMarcas);
@@ -33,21 +39,51 @@ export default function NuevoProductoPage() {
     monedaService.getAll().then(setTasas);
   }, []);
 
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setMensaje(null);
+    setError(null);
+    const form = e.target as HTMLFormElement;
+    const nombre = (form.elements.namedItem("nombre") as HTMLInputElement)
+      .value;
+    const descripcion = (
+      form.elements.namedItem("descripcion") as HTMLInputElement
+    ).value;
+    const precioDolar = Number(
+      (form.elements.namedItem("precio") as HTMLInputElement).value
+    );
+    // Aquí puedes recoger los valores de marca, tipo y tasa si los necesitas
+    // Por simplicidad, solo muestro cómo enviar la categoría
+    // Agrega validaciones si lo deseas
+    try {
+      const res = await fetch("/api/productos", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ nombre, descripcion, precioDolar, categoria }),
+      });
+      if (!res.ok) throw new Error("Error al crear el producto");
+      setMensaje("Producto creado exitosamente");
+      // Opcional: router.back();
+    } catch (err) {
+      setError("Hubo un error al crear el producto");
+    }
+  };
+
   return (
     <div className="min-h-screen bg-background">
       <header className="bg-card border-b-2 border-border p-8">
         <div className="max-w-5xl mx-auto">
           <div className="flex items-center gap-6">
-            <Link href="/">
-              <Button
-                variant="ghost"
-                size="lg"
-                className="text-foreground hover:text-accent"
-              >
-                <ArrowLeft className="w-5 h-5 mr-3" />
-                Volver
-              </Button>
-            </Link>
+            <Button
+              variant="ghost"
+              size="lg"
+              className="text-foreground hover:text-accent"
+              type="button"
+              onClick={() => router.back()}
+            >
+              <ArrowLeft className="w-5 h-5 mr-3" />
+              Volver
+            </Button>
             <h1 className="text-4xl font-bold text-foreground">
               Nuevo Producto
             </h1>
@@ -57,7 +93,13 @@ export default function NuevoProductoPage() {
 
       <main className="max-w-5xl mx-auto p-8">
         <div className="bg-card rounded-2xl border-2 border-border p-10 shadow-xl">
-          <form className="space-y-10">
+          {mensaje && (
+            <div className="mb-4 text-success font-semibold">{mensaje}</div>
+          )}
+          {error && (
+            <div className="mb-4 text-destructive font-semibold">{error}</div>
+          )}
+          <form className="space-y-10" onSubmit={handleSubmit}>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
               <div className="space-y-3">
                 <Label
@@ -149,6 +191,27 @@ export default function NuevoProductoPage() {
                   placeholder="0"
                   className="h-14 text-lg bg-background border-2 border-border focus:border-accent"
                 />
+              </div>
+
+              <div className="space-y-3">
+                <Label
+                  htmlFor="categoria"
+                  className="text-lg font-semibold text-foreground"
+                >
+                  Categoría
+                </Label>
+                <Select value={categoria} onValueChange={setCategoria}>
+                  <SelectTrigger className="h-14 bg-background border-2 border-border">
+                    <SelectValue placeholder="Seleccionar categoría" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {CATEGORIAS.map((cat) => (
+                      <SelectItem key={cat} value={cat}>
+                        {cat.charAt(0).toUpperCase() + cat.slice(1)}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
             </div>
 
