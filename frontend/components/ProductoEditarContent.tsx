@@ -67,6 +67,7 @@ export default function ProductoEditarContent({ id }: { id: string }) {
         nombre,
         descripcion,
         precioDolar,
+        precioBs: producto?.precioBs ?? 0,
         categoria,
         marca: marcaId ? Number(marcaId) : undefined,
         tipo: tipoId ? Number(tipoId) : undefined,

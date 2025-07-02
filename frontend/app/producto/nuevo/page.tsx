@@ -64,6 +64,7 @@ export default function NuevoProductoPage() {
         nombre,
         descripcion,
         precioDolar,
+        precioBs: 0,
         categoria,
         marca: marcaId ? Number(marcaId) : undefined,
         tipo: tipoId ? Number(tipoId) : undefined,
