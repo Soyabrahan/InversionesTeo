@@ -1,0 +1,53 @@
+import api from "../api";
+
+export interface Producto {
+  id?: number;
+  nombre: string;
+  marca: string;
+  precio: number;
+  stock: number;
+  stockMinimo?: number;
+  tipo: string;
+  categoria: string;
+  descripcion?: string;
+}
+
+export const productoService = {
+  // Obtener todos los productos
+  getAll: async (): Promise<Producto[]> => {
+    const response = await api.get("/productos");
+    return response.data;
+  },
+
+  // Obtener un producto por ID
+  getById: async (id: number): Promise<Producto> => {
+    const response = await api.get(`/productos/${id}`);
+    return response.data;
+  },
+
+  // Crear un nuevo producto
+  create: async (producto: Omit<Producto, "id">): Promise<Producto> => {
+    const response = await api.post("/productos", producto);
+    return response.data;
+  },
+
+  // Actualizar un producto
+  update: async (
+    id: number,
+    producto: Partial<Producto>
+  ): Promise<Producto> => {
+    const response = await api.put(`/productos/${id}`, producto);
+    return response.data;
+  },
+
+  // Eliminar un producto
+  delete: async (id: number): Promise<void> => {
+    await api.delete(`/productos/${id}`);
+  },
+
+  // Obtener productos por categoría
+  getByCategoria: async (categoria: string): Promise<Producto[]> => {
+    const response = await api.get(`/productos?categoria=${categoria}`);
+    return response.data;
+  },
+};
