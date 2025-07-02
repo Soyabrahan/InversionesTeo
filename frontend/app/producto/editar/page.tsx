@@ -1,10 +1,10 @@
-"use client";
-import { useSearchParams } from "next/navigation";
-import ProductoEditarContent from "@/components/ProductoEditarContent";
+import { Suspense } from "react";
+import EditarProductoClient from "./EditarProductoClient";
 
 export default function EditarProductoPage() {
-  const searchParams = useSearchParams();
-  const id = searchParams.get("id");
-  if (!id) return <div className="p-8">Falta el parámetro id</div>;
-  return <ProductoEditarContent id={id} />;
+  return (
+    <Suspense fallback={<div className="p-8">Cargando...</div>}>
+      <EditarProductoClient />
+    </Suspense>
+  );
 }
