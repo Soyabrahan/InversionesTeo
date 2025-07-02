@@ -30,4 +30,13 @@ export class TipoService {
   remove(id: number) {
     return this.tipoRepository.delete(id);
   }
+
+  async findByCategoria(categoria: string) {
+    return this.tipoRepository
+      .createQueryBuilder('tipo')
+      .leftJoin('tipo.productos', 'producto')
+      .where('producto.categoria = :categoria', { categoria })
+      .groupBy('tipo.id')
+      .getMany();
+  }
 }

@@ -37,4 +37,9 @@ export class TipoController {
   remove(@Param('id') id: number) {
     return this.tipoService.remove(id);
   }
+
+  @Get('por-categoria/:categoria')
+  findByCategoria(@Param('categoria') categoria: string) {
+    return this.tipoService.findByCategoria(categoria);
+  }
 }

@@ -34,4 +34,10 @@ export const marcaService = {
   delete: async (id: number): Promise<void> => {
     await api.delete(`/marcas/${id}`);
   },
+
+  // Obtener marcas por categoría
+  getByCategoria: async (categoria: string) => {
+    const response = await api.get(`/marcas/por-categoria/${categoria}`);
+    return response.data;
+  },
 };

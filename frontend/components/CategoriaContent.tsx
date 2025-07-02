@@ -14,6 +14,8 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { useEffect, useState } from "react";
 import { productoService, Producto } from "@/lib/services";
+import { marcaService } from "@/lib/services/marcaService";
+import { tipoService } from "@/lib/services/tipoService";
 
 interface CategoriaContentProps {
   categoria: string;
@@ -27,24 +29,52 @@ export default function CategoriaContent({
   const [productos, setProductos] = useState<Producto[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [marcas, setMarcas] = useState<any[]>([]);
+  const [tipos, setTipos] = useState<any[]>([]);
+  const [marca, setMarca] = useState<string>("todas");
+  const [tipo, setTipo] = useState<string>("todos");
+  const [nombre, setNombre] = useState<string>("");
+
+  useEffect(() => {
+    const fetchMarcasYTipos = async () => {
+      setLoading(true);
+      try {
+        const [marcasData, tiposData] = await Promise.all([
+          marcaService.getByCategoria(categoria),
+          tipoService.getByCategoria(categoria),
+        ]);
+        setMarcas(marcasData);
+        setTipos(tiposData);
+        setMarca("todas");
+        setTipo("todos");
+      } catch (err) {
+        setError("Error al cargar marcas o tipos");
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchMarcasYTipos();
+  }, [categoria]);
 
   useEffect(() => {
     const fetchProductos = async () => {
+      setLoading(true);
+      setError(null);
       try {
-        setLoading(true);
-        const data = await productoService.getByCategoria(categoria);
-        console.log("PRODUCTOS RECIBIDOS:", data);
+        const filtros: any = { categoria };
+        if (marca !== "todas") filtros.marca = marca;
+        if (tipo !== "todos") filtros.tipo = tipo;
+        if (nombre.trim() !== "") filtros.nombre = nombre;
+        const data = await productoService.getByFiltros(filtros);
         setProductos(data);
       } catch (err) {
-        console.error("Error fetching productos:", err);
         setError("Error al cargar los productos");
       } finally {
         setLoading(false);
       }
     };
-
     fetchProductos();
-  }, [categoria]);
+  }, [categoria, marca, tipo, nombre]);
 
   return (
     <div className="min-h-screen bg-background">
@@ -72,28 +102,34 @@ export default function CategoriaContent({
               <Input
                 placeholder="Buscar productos..."
                 className="pl-14 h-14 text-lg bg-background border-2 border-border focus:border-accent"
+                value={nombre}
+                onChange={(e) => setNombre(e.target.value)}
               />
             </div>
-            <Select>
+            <Select value={marca} onValueChange={setMarca}>
               <SelectTrigger className="w-full lg:w-64 h-14 bg-background border-2 border-border">
                 <SelectValue placeholder="Filtrar por marca" />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="todas">Todas las marcas</SelectItem>
-                <SelectItem value="royal-canin">Royal Canin</SelectItem>
-                <SelectItem value="whiskas">Whiskas</SelectItem>
-                <SelectItem value="stanley">Stanley</SelectItem>
-                <SelectItem value="raid">Raid</SelectItem>
+                {marcas.map((m) => (
+                  <SelectItem key={m.id} value={String(m.id)}>
+                    {m.nombre}
+                  </SelectItem>
+                ))}
               </SelectContent>
             </Select>
-            <Select>
+            <Select value={tipo} onValueChange={setTipo}>
               <SelectTrigger className="w-full lg:w-64 h-14 bg-background border-2 border-border">
                 <SelectValue placeholder="Filtrar por tipo" />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="todos">Todos los tipos</SelectItem>
-                <SelectItem value="alta_genetica">alta genetica</SelectItem>
-                <SelectItem value="generico">generico</SelectItem>
+                {tipos.map((t) => (
+                  <SelectItem key={t.id} value={String(t.id)}>
+                    {t.nombre}
+                  </SelectItem>
+                ))}
               </SelectContent>
             </Select>
             <Link href="/producto/nuevo">

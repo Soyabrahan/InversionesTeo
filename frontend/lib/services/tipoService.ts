@@ -34,4 +34,10 @@ export const tipoService = {
   delete: async (id: number): Promise<void> => {
     await api.delete(`/tipos/${id}`);
   },
+
+  // Obtener tipos por categoría
+  getByCategoria: async (categoria: string) => {
+    const response = await api.get(`/tipos/por-categoria/${categoria}`);
+    return response.data;
+  },
 };

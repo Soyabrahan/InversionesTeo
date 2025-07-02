@@ -30,4 +30,13 @@ export class MarcaService {
   remove(id: number) {
     return this.marcaRepository.delete(id);
   }
+
+  async findByCategoria(categoria: string) {
+    return this.marcaRepository
+      .createQueryBuilder('marca')
+      .leftJoin('marca.productos', 'producto')
+      .where('producto.categoria = :categoria', { categoria })
+      .groupBy('marca.id')
+      .getMany();
+  }
 }

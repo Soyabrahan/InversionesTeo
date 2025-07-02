@@ -37,4 +37,9 @@ export class MarcaController {
   remove(@Param('id') id: number) {
     return this.marcaService.remove(id);
   }
+
+  @Get('por-categoria/:categoria')
+  findByCategoria(@Param('categoria') categoria: string) {
+    return this.marcaService.findByCategoria(categoria);
+  }
 }

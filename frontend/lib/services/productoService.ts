@@ -58,4 +58,24 @@ export const productoService = {
       precioBs: Number(p.precioBs),
     }));
   },
+
+  // Obtener productos por filtros
+  getByFiltros: async (filtros: {
+    categoria?: string;
+    marca?: string;
+    tipo?: string;
+    nombre?: string;
+  }) => {
+    const params = new URLSearchParams();
+    if (filtros.categoria) params.append("categoria", filtros.categoria);
+    if (filtros.marca) params.append("marca", filtros.marca);
+    if (filtros.tipo) params.append("tipo", filtros.tipo);
+    if (filtros.nombre) params.append("nombre", filtros.nombre);
+    const response = await api.get(`/productos?${params.toString()}`);
+    return response.data.map((p: any) => ({
+      ...p,
+      precioDolar: Number(p.precioDolar),
+      precioBs: Number(p.precioBs),
+    }));
+  },
 };

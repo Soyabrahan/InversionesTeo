@@ -6,6 +6,7 @@ import {
   Param,
   Put,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { ProductoService } from '../services/producto.service';
 
@@ -19,8 +20,13 @@ export class ProductoController {
   }
 
   @Get()
-  findAll() {
-    return this.productoService.findAll();
+  findAll(
+    @Query('categoria') categoria?: string,
+    @Query('marca') marca?: string,
+    @Query('tipo') tipo?: string,
+    @Query('nombre') nombre?: string,
+  ) {
+    return this.productoService.findAll({ categoria, marca, tipo, nombre });
   }
 
   @Get(':id')
