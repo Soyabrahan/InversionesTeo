@@ -80,7 +80,7 @@ export default function CategoriaContent({
     <div className="min-h-screen bg-background">
       <header className="bg-card border-b border-border p-8">
         <div className="max-w-7xl mx-auto">
-          <div className="flex items-center gap-6 mb-6">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6 mb-6">
             <Link href="/">
               <Button
                 variant="ghost"
@@ -91,7 +91,7 @@ export default function CategoriaContent({
                 Volver al Inicio
               </Button>
             </Link>
-            <h1 className="text-4xl font-bold text-foreground">
+            <h1 className="text-4xl font-bold text-foreground whitespace-pre-line break-words text-left w-full">
               {nombreCategoria}
             </h1>
           </div>
@@ -166,8 +166,8 @@ export default function CategoriaContent({
         {!loading && !error && (
           <>
             <div className="bg-card rounded-2xl border-2 border-border overflow-x-auto shadow-xl">
-              <div className="min-w-[400px]">
-                <table className="w-full text-xs md:text-base">
+              <div className="min-w-[320px] w-full">
+                <table className="w-full text-xs md:text-base min-w-full">
                   <thead className="bg-muted/30">
                     <tr>
                       <th className="text-left p-1 md:p-3 font-bold text-foreground text-xs md:text-base">
