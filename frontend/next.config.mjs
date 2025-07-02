@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: "export",
+  // output: "export", // Comentado para permitir rutas dinámicas y SSR
   eslint: {
     ignoreDuringBuilds: true,
   },
