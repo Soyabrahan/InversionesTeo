@@ -88,7 +88,10 @@ export default function HomePage() {
     setLoading(true);
     try {
       // Llama al endpoint que actualizará la tasa BCV en el backend
-      const res = await fetch("/api/monedas/bcv/actualizar", { method: "PUT" });
+      const res = await fetch(
+        "https://inversiones-teo-backend.onrender.com/monedas/bcv/actualizar",
+        { method: "PUT" }
+      );
       if (!res.ok) throw new Error("No se pudo actualizar la tasa BCV");
       const data = await res.json();
       setBcv(data);
