@@ -66,8 +66,8 @@ export default function NuevoProductoPage() {
         precioDolar,
         precioBs: 0,
         categoria,
-        marca: marcaId ? Number(marcaId) : undefined,
-        tipo: tipoId ? Number(tipoId) : undefined,
+        marca: marcaId !== "none" ? Number(marcaId) : undefined,
+        tipo: tipoId !== "none" ? Number(tipoId) : undefined,
         tasa: tasaId ? Number(tasaId) : undefined,
       });
       setMensaje("Producto creado exitosamente");
@@ -141,6 +141,7 @@ export default function NuevoProductoPage() {
                     <SelectValue placeholder="Seleccionar marca" />
                   </SelectTrigger>
                   <SelectContent>
+                    <SelectItem value="none">Sin Marca</SelectItem>
                     {marcas.map((marca) => (
                       <SelectItem key={marca.id} value={String(marca.id)}>
                         {marca.nombre}
@@ -162,6 +163,7 @@ export default function NuevoProductoPage() {
                     <SelectValue placeholder="Seleccionar tipo" />
                   </SelectTrigger>
                   <SelectContent>
+                    <SelectItem value="none">Sin Tipo</SelectItem>
                     {tipos.map((tipo) => (
                       <SelectItem key={tipo.id} value={String(tipo.id)}>
                         {tipo.nombre}

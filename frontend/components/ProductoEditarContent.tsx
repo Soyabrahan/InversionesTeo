@@ -69,8 +69,8 @@ export default function ProductoEditarContent({ id }: { id: string }) {
         precioDolar,
         precioBs: producto?.precioBs ?? 0,
         categoria,
-        marca: marcaId ? Number(marcaId) : undefined,
-        tipo: tipoId ? Number(tipoId) : undefined,
+        marca: marcaId !== "none" ? Number(marcaId) : undefined,
+        tipo: tipoId !== "none" ? Number(tipoId) : undefined,
         tasa: tasaId ? Number(tasaId) : undefined,
       });
       setMensaje("Producto actualizado exitosamente");
@@ -144,13 +144,18 @@ export default function ProductoEditarContent({ id }: { id: string }) {
                   defaultValue={
                     typeof producto.marca === "object" && producto.marca
                       ? String(producto.marca.id)
-                      : String(producto.marca || "")
+                      : producto.marca === null ||
+                        producto.marca === undefined ||
+                        producto.marca === "none"
+                      ? "none"
+                      : String(producto.marca)
                   }
                 >
                   <SelectTrigger className="h-14 bg-background border-2 border-border">
                     <SelectValue placeholder="Seleccionar marca" />
                   </SelectTrigger>
                   <SelectContent>
+                    <SelectItem value="none">Sin Marca</SelectItem>
                     {marcas.map((marca) => (
                       <SelectItem key={marca.id} value={String(marca.id)}>
                         {marca.nombre}
@@ -172,13 +177,18 @@ export default function ProductoEditarContent({ id }: { id: string }) {
                   defaultValue={
                     typeof producto.tipo === "object" && producto.tipo
                       ? String(producto.tipo.id)
-                      : String(producto.tipo || "")
+                      : producto.tipo === null ||
+                        producto.tipo === undefined ||
+                        producto.tipo === "none"
+                      ? "none"
+                      : String(producto.tipo)
                   }
                 >
                   <SelectTrigger className="h-14 bg-background border-2 border-border">
                     <SelectValue placeholder="Seleccionar tipo" />
                   </SelectTrigger>
                   <SelectContent>
+                    <SelectItem value="none">Sin Tipo</SelectItem>
                     {tipos.map((tipo) => (
                       <SelectItem key={tipo.id} value={String(tipo.id)}>
                         {tipo.nombre}

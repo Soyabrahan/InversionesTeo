@@ -16,6 +16,21 @@ import { useEffect, useState } from "react";
 import { productoService, Producto } from "@/lib/services";
 import { marcaService } from "@/lib/services/marcaService";
 import { tipoService } from "@/lib/services/tipoService";
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+} from "@/components/ui/dropdown-menu";
+import {
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+  DialogHeader,
+  DialogFooter,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { useToast } from "@/hooks/use-toast";
 
 interface CategoriaContentProps {
   categoria: string;
@@ -34,6 +49,11 @@ export default function CategoriaContent({
   const [marca, setMarca] = useState<string>("todas");
   const [tipo, setTipo] = useState<string>("todos");
   const [nombre, setNombre] = useState<string>("");
+  const { toast } = useToast();
+  const [productoAEliminar, setProductoAEliminar] = useState<Producto | null>(
+    null
+  );
+  const [eliminando, setEliminando] = useState(false);
 
   useEffect(() => {
     const fetchMarcasYTipos = async () => {
@@ -200,15 +220,31 @@ export default function CategoriaContent({
                           {producto.precioBs?.toLocaleString() || "0"}
                         </td>
                         <td className="p-1 md:p-3">
-                          <Link href={`/producto/editar?id=${producto.id}`}>
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              className="border-2 border-accent text-accent hover:bg-accent hover:text-white bg-transparent text-xs md:text-base px-2 md:px-4 py-1 md:py-2"
-                            >
-                              Editar
-                            </Button>
-                          </Link>
+                          <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                className="border-2 border-accent text-accent hover:bg-accent hover:text-white bg-transparent text-xs md:text-base px-2 md:px-4 py-1 md:py-2"
+                              >
+                                Acciones
+                              </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent>
+                              <DropdownMenuItem asChild>
+                                <Link
+                                  href={`/producto/editar?id=${producto.id}`}
+                                >
+                                  Editar
+                                </Link>
+                              </DropdownMenuItem>
+                              <DropdownMenuItem
+                                onClick={() => setProductoAEliminar(producto)}
+                              >
+                                Eliminar
+                              </DropdownMenuItem>
+                            </DropdownMenuContent>
+                          </DropdownMenu>
                         </td>
                       </tr>
                     ))}
@@ -233,6 +269,61 @@ export default function CategoriaContent({
           </>
         )}
       </main>
+
+      <Dialog
+        open={!!productoAEliminar}
+        onOpenChange={(open) => {
+          if (!open) setProductoAEliminar(null);
+        }}
+      >
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>¿Eliminar producto?</DialogTitle>
+          </DialogHeader>
+          <p>
+            ¿Estás seguro de que deseas eliminar el producto{" "}
+            <b>{productoAEliminar?.nombre}</b>? Esta acción no se puede
+            deshacer.
+          </p>
+          <DialogFooter>
+            <Button
+              variant="outline"
+              onClick={() => setProductoAEliminar(null)}
+              disabled={eliminando}
+            >
+              Cancelar
+            </Button>
+            <Button
+              variant="destructive"
+              onClick={async () => {
+                if (!productoAEliminar) return;
+                setEliminando(true);
+                try {
+                  await productoService.delete(productoAEliminar.id!);
+                  setProductos(
+                    productos.filter((p) => p.id !== productoAEliminar.id)
+                  );
+                  toast({ title: "Producto eliminado correctamente" });
+                } catch (err) {
+                  let errorMsg = "Ocurrió un error inesperado";
+                  if (err instanceof Error) errorMsg = err.message;
+                  toast({
+                    title: "Error al eliminar el producto",
+                    description: errorMsg,
+                    variant: "destructive",
+                  });
+                } finally {
+                  setEliminando(false);
+                  setProductoAEliminar(null);
+                }
+              }}
+              disabled={eliminando}
+            >
+              Eliminar
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
