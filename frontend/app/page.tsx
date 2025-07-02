@@ -139,7 +139,7 @@ export default function HomePage() {
         </div>
       </header>
 
-      <main className="max-w-7xl mx-auto p-8">
+      <main className="max-w-7xl mx-auto p-4 md:p-8">
         {mensaje && (
           <div className="mb-4 text-success font-semibold">{mensaje}</div>
         )}
@@ -208,7 +208,7 @@ export default function HomePage() {
             )}
           </div>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-8">
           {categorias.map((categoria) => {
             const IconComponent = categoria.icono;
             return (
@@ -217,18 +217,18 @@ export default function HomePage() {
                 href={`/categoria/${categoria.id}`}
                 className="group"
               >
-                <div className="bg-card hover:bg-card/90 border border-border rounded-2xl p-10 transition-all duration-300 hover:scale-105 hover:shadow-2xl cursor-pointer min-h-[200px] flex flex-col items-center justify-center">
-                  <div className="flex flex-col items-center text-center space-y-6">
+                <div className="bg-card hover:bg-card/90 border border-border rounded-2xl p-4 md:p-10 transition-all duration-300 hover:scale-105 hover:shadow-2xl cursor-pointer min-h-[120px] md:min-h-[200px] flex flex-col items-center justify-center">
+                  <div className="flex flex-col items-center text-center space-y-3 md:space-y-6">
                     <div
-                      className={`${categoria.color} p-6 rounded-2xl shadow-lg`}
+                      className={`${categoria.color} p-3 md:p-6 rounded-2xl shadow-lg`}
                     >
-                      <IconComponent className="w-12 h-12 text-white" />
+                      <IconComponent className="w-8 h-8 md:w-12 md:h-12 text-white" />
                     </div>
                     <div>
-                      <h2 className="text-2xl font-bold text-foreground group-hover:text-accent transition-colors mb-2">
+                      <h2 className="text-base md:text-2xl font-bold text-foreground group-hover:text-accent transition-colors mb-1 md:mb-2">
                         {categoria.nombre}
                       </h2>
-                      <p className="text-muted-foreground text-base">
+                      <p className="text-muted-foreground text-xs md:text-base">
                         {categoria.descripcion}
                       </p>
                     </div>

@@ -137,23 +137,11 @@ export default function CategoriaContent({
                       <th className="text-left p-1 md:p-3 font-bold text-foreground text-xs md:text-base">
                         Producto
                       </th>
-                      <th className="text-left p-1 md:p-3 font-bold text-foreground text-xs md:text-base hidden md:table-cell">
-                        Categoría
-                      </th>
-                      <th className="text-left p-1 md:p-3 font-bold text-foreground text-xs md:text-base hidden md:table-cell">
-                        Marca
-                      </th>
                       <th className="text-left p-1 md:p-3 font-bold text-foreground text-xs md:text-base">
                         Precio$
                       </th>
                       <th className="text-left p-1 md:p-3 font-bold text-foreground text-xs md:text-base">
                         PrecioBs
-                      </th>
-                      <th className="text-left p-1 md:p-3 font-bold text-foreground text-xs md:text-base hidden md:table-cell">
-                        Tipo
-                      </th>
-                      <th className="text-left p-1 md:p-3 font-bold text-foreground text-xs md:text-base">
-                        Tasa
                       </th>
                       <th className="text-left p-1 md:p-3 font-bold text-foreground text-xs md:text-base">
                         Acciones
@@ -169,33 +157,11 @@ export default function CategoriaContent({
                         <td className="p-1 md:p-3 font-semibold text-foreground text-xs md:text-base">
                           {producto.nombre}
                         </td>
-                        <td className="p-1 md:p-3 text-muted-foreground text-xs md:text-base hidden md:table-cell">
-                          {producto.categoria}
-                        </td>
-                        <td className="p-1 md:p-3 text-muted-foreground text-xs md:text-base hidden md:table-cell">
-                          {typeof producto.marca === "object"
-                            ? producto.marca?.nombre
-                            : producto.marca}
-                        </td>
                         <td className="p-1 md:p-3 font-bold text-success text-xs md:text-lg">
                           ${producto.precioDolar?.toLocaleString() || "0"}
                         </td>
                         <td className="p-1 md:p-3 font-bold text-accent text-xs md:text-lg">
                           {producto.precioBs?.toLocaleString() || "0"}
-                        </td>
-                        <td className="p-1 md:p-3 text-muted-foreground text-xs md:text-base hidden md:table-cell">
-                          {typeof producto.tipo === "object"
-                            ? producto.tipo?.nombre
-                            : producto.tipo}
-                        </td>
-                        <td className="p-1 md:p-3 text-muted-foreground text-xs md:text-base">
-                          {typeof producto.tasa === "object"
-                            ? producto.tasa?.nombre === "bcv"
-                              ? "BCV"
-                              : producto.tasa?.nombre === "modificado"
-                              ? "Modificada"
-                              : producto.tasa?.nombre
-                            : producto.tasa}
                         </td>
                         <td className="p-1 md:p-3">
                           <Link href={`/producto/${producto.id}/editar`}>
