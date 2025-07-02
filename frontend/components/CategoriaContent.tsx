@@ -129,8 +129,8 @@ export default function CategoriaContent({
 
         {!loading && !error && (
           <>
-            <div className="bg-card rounded-2xl border-2 border-border overflow-hidden shadow-xl">
-              <div className="overflow-x-auto">
+            <div className="bg-card rounded-2xl border-2 border-border overflow-x-auto shadow-xl">
+              <div className="min-w-[900px]">
                 <table className="w-full">
                   <thead className="bg-muted/30">
                     <tr>
