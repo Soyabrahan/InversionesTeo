@@ -30,19 +30,19 @@ export class MonedaService {
     return this.monedaRepository.findOne({ where: { id } });
   }
 
-  update(id: number, data: Partial<Moneda>) {
-    const result = this.monedaRepository.update(id, data);
+  async update(id: number, data: Partial<Moneda>) {
+    const result = await this.monedaRepository.update(id, data);
     // Si la tasa fue actualizada, recalcular los precios de los productos que usan esta tasa
     if (data.tasa !== undefined) {
-      const moneda = this.monedaRepository.findOne({ where: { id } });
+      const moneda = await this.monedaRepository.findOne({ where: { id } });
       if (moneda) {
-        const productos = this.productoRepository.find({
+        const productos = await this.productoRepository.find({
           where: { tasa: { id: moneda.id } },
           relations: ['tasa'],
         });
         for (const producto of productos) {
           producto.precioBs = Number(producto.precioDolar) * moneda.tasa;
-          this.productoRepository.save(producto);
+          await this.productoRepository.save(producto);
         }
       }
     }
