@@ -16,7 +16,11 @@ export const productoService = {
   // Obtener todos los productos
   getAll: async (): Promise<Producto[]> => {
     const response = await api.get("/productos");
-    return response.data;
+    return response.data.map((p: any) => ({
+      ...p,
+      precioDolar: Number(p.precioDolar),
+      precioBs: Number(p.precioBs),
+    }));
   },
 
   // Obtener un producto por ID
@@ -48,6 +52,10 @@ export const productoService = {
   // Obtener productos por categoría
   getByCategoria: async (categoria: string): Promise<Producto[]> => {
     const response = await api.get(`/productos?categoria=${categoria}`);
-    return response.data;
+    return response.data.map((p: any) => ({
+      ...p,
+      precioDolar: Number(p.precioDolar),
+      precioBs: Number(p.precioBs),
+    }));
   },
 };

@@ -33,6 +33,7 @@ export default function CategoriaContent({
       try {
         setLoading(true);
         const data = await productoService.getByCategoria(categoria);
+        console.log("PRODUCTOS RECIBIDOS:", data);
         setProductos(data);
       } catch (err) {
         console.error("Error fetching productos:", err);
