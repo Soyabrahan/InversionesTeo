@@ -72,7 +72,7 @@ export default function NuevoProductoPage() {
       });
       setMensaje("Producto creado exitosamente");
       if (created && created.id) {
-        router.push(`/producto/${created.id}/editar`);
+        router.push(`/categoria/${categoria}`);
       }
     } catch (err: any) {
       setError(
