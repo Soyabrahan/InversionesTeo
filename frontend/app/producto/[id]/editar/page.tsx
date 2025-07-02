@@ -17,7 +17,6 @@ const producto = {
   id: 1,
   nombre: "Alimento Premium Perro Adulto",
   marca: "Royal Canin",
-  peso: "15kg",
   precio: 45000,
   stock: 12,
   stockMinimo: 5,
@@ -128,20 +127,6 @@ export default function EditarProductoPage({
                     <SelectItem value="generico">Genérico</SelectItem>
                   </SelectContent>
                 </Select>
-              </div>
-
-              <div className="space-y-3">
-                <Label
-                  htmlFor="peso"
-                  className="text-lg font-semibold text-foreground"
-                >
-                  Peso
-                </Label>
-                <Input
-                  id="peso"
-                  defaultValue={producto.peso}
-                  className="h-14 text-lg bg-background border-2 border-border focus:border-accent"
-                />
               </div>
 
               <div className="space-y-3">

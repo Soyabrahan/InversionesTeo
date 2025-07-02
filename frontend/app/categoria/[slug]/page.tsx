@@ -17,7 +17,6 @@ const productosEjemplo = [
     id: 1,
     nombre: "Alimento Premium Perro Adulto",
     marca: "Royal Canin",
-    peso: "15kg",
     precio: 45000,
     stock: 12,
     tipo: "alta_genetica",
@@ -27,7 +26,6 @@ const productosEjemplo = [
     id: 2,
     nombre: "Alimento Genérico Gato",
     marca: "Whiskas",
-    peso: "3kg",
     precio: 8500,
     stock: 25,
     tipo: "generico",
@@ -37,7 +35,6 @@ const productosEjemplo = [
     id: 3,
     nombre: "Martillo Carpintero",
     marca: "Stanley",
-    peso: "0.5kg",
     precio: 15000,
     stock: 8,
     tipo: "generico",
@@ -47,7 +44,6 @@ const productosEjemplo = [
     id: 4,
     nombre: "Insecticida Hogar",
     marca: "Raid",
-    peso: "400ml",
     precio: 3500,
     stock: 3,
     tipo: "generico",
@@ -161,9 +157,6 @@ export default function CategoriaPage({
                     Marca
                   </th>
                   <th className="text-left p-6 font-bold text-foreground text-lg">
-                    Peso
-                  </th>
-                  <th className="text-left p-6 font-bold text-foreground text-lg">
                     Precio
                   </th>
                   <th className="text-left p-6 font-bold text-foreground text-lg">
@@ -190,9 +183,6 @@ export default function CategoriaPage({
                     </td>
                     <td className="p-6 text-muted-foreground text-lg">
                       {producto.marca}
-                    </td>
-                    <td className="p-6 text-muted-foreground text-lg">
-                      {producto.peso}
                     </td>
                     <td className="p-6">
                       <span className="font-bold text-success text-xl">

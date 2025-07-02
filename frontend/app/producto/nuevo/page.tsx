@@ -1,10 +1,16 @@
-import Link from "next/link"
-import { ArrowLeft, Save } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Textarea } from "@/components/ui/textarea"
+import Link from "next/link";
+import { ArrowLeft, Save } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
 
 export default function NuevoProductoPage() {
   return (
@@ -13,12 +19,18 @@ export default function NuevoProductoPage() {
         <div className="max-w-5xl mx-auto">
           <div className="flex items-center gap-6">
             <Link href="/">
-              <Button variant="ghost" size="lg" className="text-foreground hover:text-accent">
+              <Button
+                variant="ghost"
+                size="lg"
+                className="text-foreground hover:text-accent"
+              >
                 <ArrowLeft className="w-5 h-5 mr-3" />
                 Volver
               </Button>
             </Link>
-            <h1 className="text-4xl font-bold text-foreground">Nuevo Producto</h1>
+            <h1 className="text-4xl font-bold text-foreground">
+              Nuevo Producto
+            </h1>
           </div>
         </div>
       </header>
@@ -28,7 +40,10 @@ export default function NuevoProductoPage() {
           <form className="space-y-10">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
               <div className="space-y-3">
-                <Label htmlFor="nombre" className="text-lg font-semibold text-foreground">
+                <Label
+                  htmlFor="nombre"
+                  className="text-lg font-semibold text-foreground"
+                >
                   Nombre del Producto *
                 </Label>
                 <Input
@@ -39,7 +54,10 @@ export default function NuevoProductoPage() {
               </div>
 
               <div className="space-y-3">
-                <Label htmlFor="categoria" className="text-lg font-semibold text-foreground">
+                <Label
+                  htmlFor="categoria"
+                  className="text-lg font-semibold text-foreground"
+                >
                   Categoría *
                 </Label>
                 <Select>
@@ -58,7 +76,10 @@ export default function NuevoProductoPage() {
               </div>
 
               <div className="space-y-3">
-                <Label htmlFor="marca" className="text-lg font-semibold text-foreground">
+                <Label
+                  htmlFor="marca"
+                  className="text-lg font-semibold text-foreground"
+                >
                   Marca *
                 </Label>
                 <Input
@@ -69,7 +90,10 @@ export default function NuevoProductoPage() {
               </div>
 
               <div className="space-y-3">
-                <Label htmlFor="tipo" className="text-lg font-semibold text-foreground">
+                <Label
+                  htmlFor="tipo"
+                  className="text-lg font-semibold text-foreground"
+                >
                   Tipo *
                 </Label>
                 <Select>
@@ -84,18 +108,10 @@ export default function NuevoProductoPage() {
               </div>
 
               <div className="space-y-3">
-                <Label htmlFor="peso" className="text-lg font-semibold text-foreground">
-                  Peso
-                </Label>
-                <Input
-                  id="peso"
-                  placeholder="Ej: 15kg, 500g, 2L"
-                  className="h-14 text-lg bg-background border-2 border-border focus:border-accent"
-                />
-              </div>
-
-              <div className="space-y-3">
-                <Label htmlFor="precio" className="text-lg font-semibold text-foreground">
+                <Label
+                  htmlFor="precio"
+                  className="text-lg font-semibold text-foreground"
+                >
                   Precio *
                 </Label>
                 <Input
@@ -107,7 +123,10 @@ export default function NuevoProductoPage() {
               </div>
 
               <div className="space-y-3">
-                <Label htmlFor="stock" className="text-lg font-semibold text-foreground">
+                <Label
+                  htmlFor="stock"
+                  className="text-lg font-semibold text-foreground"
+                >
                   Stock Inicial *
                 </Label>
                 <Input
@@ -119,7 +138,10 @@ export default function NuevoProductoPage() {
               </div>
 
               <div className="space-y-3">
-                <Label htmlFor="stock-minimo" className="text-lg font-semibold text-foreground">
+                <Label
+                  htmlFor="stock-minimo"
+                  className="text-lg font-semibold text-foreground"
+                >
                   Stock Mínimo
                 </Label>
                 <Input
@@ -132,7 +154,10 @@ export default function NuevoProductoPage() {
             </div>
 
             <div className="space-y-3">
-              <Label htmlFor="descripcion" className="text-lg font-semibold text-foreground">
+              <Label
+                htmlFor="descripcion"
+                className="text-lg font-semibold text-foreground"
+              >
                 Descripción (Opcional)
               </Label>
               <Textarea
@@ -163,5 +188,5 @@ export default function NuevoProductoPage() {
         </div>
       </main>
     </div>
-  )
+  );
 }
