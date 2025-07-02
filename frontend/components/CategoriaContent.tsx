@@ -91,8 +91,8 @@ export default function CategoriaContent({
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="todos">Todos los tipos</SelectItem>
-                <SelectItem value="alta_genetica">Alta Genética</SelectItem>
-                <SelectItem value="generico">Genérico</SelectItem>
+                <SelectItem value="alta_genetica">alta genetica</SelectItem>
+                <SelectItem value="generico">generico</SelectItem>
               </SelectContent>
             </Select>
             <Link href="/producto/nuevo">
@@ -143,9 +143,6 @@ export default function CategoriaContent({
                         Precio
                       </th>
                       <th className="text-left p-6 font-bold text-foreground text-lg">
-                        Stock
-                      </th>
-                      <th className="text-left p-6 font-bold text-foreground text-lg">
                         Tipo
                       </th>
                       <th className="text-left p-6 font-bold text-foreground text-lg">
@@ -165,28 +162,14 @@ export default function CategoriaContent({
                           </div>
                         </td>
                         <td className="p-6 text-muted-foreground text-lg">
-                          {producto.marca}
+                          {typeof producto.marca === "object"
+                            ? producto.marca?.nombre
+                            : producto.marca}
                         </td>
                         <td className="p-6">
                           <span className="font-bold text-success text-xl">
                             ${producto.precio?.toLocaleString() || "0"}
                           </span>
-                        </td>
-                        <td className="p-6">
-                          <Badge
-                            variant={
-                              (producto.stock || 0) > 10
-                                ? "default"
-                                : "destructive"
-                            }
-                            className={`text-base px-4 py-2 ${
-                              (producto.stock || 0) > 10
-                                ? "bg-success text-white"
-                                : "bg-destructive text-white"
-                            }`}
-                          >
-                            {producto.stock || 0} unidades
-                          </Badge>
                         </td>
                         <td className="p-6">
                           <Badge

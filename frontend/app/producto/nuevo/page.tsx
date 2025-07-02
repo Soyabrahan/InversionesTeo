@@ -1,3 +1,4 @@
+"use client";
 import Link from "next/link";
 import { ArrowLeft, Save } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -11,8 +12,27 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import { useEffect, useState } from "react";
+import {
+  marcaService,
+  tipoService,
+  monedaService,
+  Marca,
+  Tipo,
+  Moneda,
+} from "@/lib/services";
 
 export default function NuevoProductoPage() {
+  const [marcas, setMarcas] = useState<Marca[]>([]);
+  const [tipos, setTipos] = useState<Tipo[]>([]);
+  const [tasas, setTasas] = useState<Moneda[]>([]);
+
+  useEffect(() => {
+    marcaService.getAll().then(setMarcas);
+    tipoService.getAll().then(setTipos);
+    monedaService.getAll().then(setTasas);
+  }, []);
+
   return (
     <div className="min-h-screen bg-background">
       <header className="bg-card border-b-2 border-border p-8">
@@ -55,38 +75,23 @@ export default function NuevoProductoPage() {
 
               <div className="space-y-3">
                 <Label
-                  htmlFor="categoria"
-                  className="text-lg font-semibold text-foreground"
-                >
-                  Categoría *
-                </Label>
-                <Select>
-                  <SelectTrigger className="h-14 bg-background border-2 border-border">
-                    <SelectValue placeholder="Seleccionar categoría" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="alimentos">Alimentos</SelectItem>
-                    <SelectItem value="ferreteria">Ferretería</SelectItem>
-                    <SelectItem value="venenos">Venenos</SelectItem>
-                    <SelectItem value="pesca">Pesca</SelectItem>
-                    <SelectItem value="mimbre">Mimbre</SelectItem>
-                    <SelectItem value="otros">Otros</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-
-              <div className="space-y-3">
-                <Label
                   htmlFor="marca"
                   className="text-lg font-semibold text-foreground"
                 >
-                  Marca *
+                  Marca
                 </Label>
-                <Input
-                  id="marca"
-                  placeholder="Ej: Royal Canin"
-                  className="h-14 text-lg bg-background border-2 border-border focus:border-accent"
-                />
+                <Select>
+                  <SelectTrigger className="h-14 bg-background border-2 border-border">
+                    <SelectValue placeholder="Seleccionar marca" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {marcas.map((marca) => (
+                      <SelectItem key={marca.id} value={String(marca.id)}>
+                        {marca.nombre}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
 
               <div className="space-y-3">
@@ -94,15 +99,39 @@ export default function NuevoProductoPage() {
                   htmlFor="tipo"
                   className="text-lg font-semibold text-foreground"
                 >
-                  Tipo *
+                  Tipo
                 </Label>
                 <Select>
                   <SelectTrigger className="h-14 bg-background border-2 border-border">
                     <SelectValue placeholder="Seleccionar tipo" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="alta_genetica">Alta Genética</SelectItem>
-                    <SelectItem value="generico">Genérico</SelectItem>
+                    {tipos.map((tipo) => (
+                      <SelectItem key={tipo.id} value={String(tipo.id)}>
+                        {tipo.nombre}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="space-y-3">
+                <Label
+                  htmlFor="tasa"
+                  className="text-lg font-semibold text-foreground"
+                >
+                  Tasa
+                </Label>
+                <Select>
+                  <SelectTrigger className="h-14 bg-background border-2 border-border">
+                    <SelectValue placeholder="Seleccionar tasa" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {tasas.map((tasa) => (
+                      <SelectItem key={tasa.id} value={String(tasa.id)}>
+                        {tasa.nombre} ({tasa.tasa})
+                      </SelectItem>
+                    ))}
                   </SelectContent>
                 </Select>
               </div>
@@ -112,42 +141,12 @@ export default function NuevoProductoPage() {
                   htmlFor="precio"
                   className="text-lg font-semibold text-foreground"
                 >
-                  Precio *
+                  Precio ($)
                 </Label>
                 <Input
                   id="precio"
                   type="number"
                   placeholder="0"
-                  className="h-14 text-lg bg-background border-2 border-border focus:border-accent"
-                />
-              </div>
-
-              <div className="space-y-3">
-                <Label
-                  htmlFor="stock"
-                  className="text-lg font-semibold text-foreground"
-                >
-                  Stock Inicial *
-                </Label>
-                <Input
-                  id="stock"
-                  type="number"
-                  placeholder="0"
-                  className="h-14 text-lg bg-background border-2 border-border focus:border-accent"
-                />
-              </div>
-
-              <div className="space-y-3">
-                <Label
-                  htmlFor="stock-minimo"
-                  className="text-lg font-semibold text-foreground"
-                >
-                  Stock Mínimo
-                </Label>
-                <Input
-                  id="stock-minimo"
-                  type="number"
-                  placeholder="5"
                   className="h-14 text-lg bg-background border-2 border-border focus:border-accent"
                 />
               </div>
