@@ -200,7 +200,7 @@ export default function CategoriaContent({
                           {producto.precioBs?.toLocaleString() || "0"}
                         </td>
                         <td className="p-1 md:p-3">
-                          <Link href={`/producto/${producto.id}/editar`}>
+                          <Link href={`/producto/editar?id=${producto.id}`}>
                             <Button
                               variant="outline"
                               size="sm"
