@@ -17,21 +17,27 @@ import {
   marcaService,
   tipoService,
   monedaService,
+  productoService,
   Marca,
   Tipo,
   Moneda,
+  Producto,
 } from "@/lib/services";
 
-export default function NuevoProductoPage() {
+export default function ProductoEditarContent({ id }: { id: string }) {
   const [marcas, setMarcas] = useState<Marca[]>([]);
   const [tipos, setTipos] = useState<Tipo[]>([]);
   const [tasas, setTasas] = useState<Moneda[]>([]);
+  const [producto, setProducto] = useState<Producto | null>(null);
 
   useEffect(() => {
     marcaService.getAll().then(setMarcas);
     tipoService.getAll().then(setTipos);
     monedaService.getAll().then(setTasas);
-  }, []);
+    productoService.getById(Number(id)).then(setProducto);
+  }, [id]);
+
+  if (!producto) return <div className="p-8">Cargando producto...</div>;
 
   return (
     <div className="min-h-screen bg-background">
@@ -49,7 +55,7 @@ export default function NuevoProductoPage() {
               </Button>
             </Link>
             <h1 className="text-4xl font-bold text-foreground">
-              Nuevo Producto
+              Editar Producto
             </h1>
           </div>
         </div>
@@ -68,7 +74,7 @@ export default function NuevoProductoPage() {
                 </Label>
                 <Input
                   id="nombre"
-                  placeholder="Ej: Alimento Premium Perro Adulto"
+                  defaultValue={producto.nombre}
                   className="h-14 text-lg bg-background border-2 border-border focus:border-accent"
                 />
               </div>
@@ -80,7 +86,13 @@ export default function NuevoProductoPage() {
                 >
                   Marca
                 </Label>
-                <Select>
+                <Select
+                  defaultValue={
+                    typeof producto.marca === "object" && producto.marca
+                      ? String(producto.marca.id)
+                      : String(producto.marca || "")
+                  }
+                >
                   <SelectTrigger className="h-14 bg-background border-2 border-border">
                     <SelectValue placeholder="Seleccionar marca" />
                   </SelectTrigger>
@@ -101,7 +113,13 @@ export default function NuevoProductoPage() {
                 >
                   Tipo
                 </Label>
-                <Select>
+                <Select
+                  defaultValue={
+                    typeof producto.tipo === "object" && producto.tipo
+                      ? String(producto.tipo.id)
+                      : String(producto.tipo || "")
+                  }
+                >
                   <SelectTrigger className="h-14 bg-background border-2 border-border">
                     <SelectValue placeholder="Seleccionar tipo" />
                   </SelectTrigger>
@@ -122,7 +140,13 @@ export default function NuevoProductoPage() {
                 >
                   Tasa
                 </Label>
-                <Select>
+                <Select
+                  defaultValue={
+                    typeof producto.tasa === "object" && producto.tasa
+                      ? String(producto.tasa.id)
+                      : String(producto.tasa || "")
+                  }
+                >
                   <SelectTrigger className="h-14 bg-background border-2 border-border">
                     <SelectValue placeholder="Seleccionar tasa" />
                   </SelectTrigger>
@@ -146,7 +170,7 @@ export default function NuevoProductoPage() {
                 <Input
                   id="precio"
                   type="number"
-                  placeholder="0"
+                  defaultValue={producto.precioDolar}
                   className="h-14 text-lg bg-background border-2 border-border focus:border-accent"
                 />
               </div>
@@ -161,7 +185,7 @@ export default function NuevoProductoPage() {
               </Label>
               <Textarea
                 id="descripcion"
-                placeholder="Descripción adicional del producto..."
+                defaultValue={producto.descripcion}
                 className="min-h-32 text-lg bg-background border-2 border-border focus:border-accent resize-none"
               />
             </div>
@@ -172,7 +196,7 @@ export default function NuevoProductoPage() {
                 className="h-16 px-10 flex-1 bg-success hover:bg-success/90 text-white text-lg font-semibold"
               >
                 <Save className="w-6 h-6 mr-3" />
-                Guardar Producto
+                Guardar Cambios
               </Button>
               <Link href="/" className="flex-1">
                 <Button
