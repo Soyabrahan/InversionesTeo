@@ -130,32 +130,32 @@ export default function CategoriaContent({
         {!loading && !error && (
           <>
             <div className="bg-card rounded-2xl border-2 border-border overflow-x-auto shadow-xl">
-              <div className="min-w-[900px]">
-                <table className="w-full">
+              <div className="min-w-[400px]">
+                <table className="w-full text-xs md:text-base">
                   <thead className="bg-muted/30">
                     <tr>
-                      <th className="text-left p-6 font-bold text-foreground text-lg">
+                      <th className="text-left p-1 md:p-3 font-bold text-foreground text-xs md:text-base">
                         Producto
                       </th>
-                      <th className="text-left p-6 font-bold text-foreground text-lg">
+                      <th className="text-left p-1 md:p-3 font-bold text-foreground text-xs md:text-base hidden md:table-cell">
                         Categoría
                       </th>
-                      <th className="text-left p-6 font-bold text-foreground text-lg">
+                      <th className="text-left p-1 md:p-3 font-bold text-foreground text-xs md:text-base hidden md:table-cell">
                         Marca
                       </th>
-                      <th className="text-left p-6 font-bold text-foreground text-lg">
+                      <th className="text-left p-1 md:p-3 font-bold text-foreground text-xs md:text-base">
                         Precio$
                       </th>
-                      <th className="text-left p-6 font-bold text-foreground text-lg">
+                      <th className="text-left p-1 md:p-3 font-bold text-foreground text-xs md:text-base">
                         PrecioBs
                       </th>
-                      <th className="text-left p-6 font-bold text-foreground text-lg">
+                      <th className="text-left p-1 md:p-3 font-bold text-foreground text-xs md:text-base hidden md:table-cell">
                         Tipo
                       </th>
-                      <th className="text-left p-6 font-bold text-foreground text-lg">
+                      <th className="text-left p-1 md:p-3 font-bold text-foreground text-xs md:text-base">
                         Tasa
                       </th>
-                      <th className="text-left p-6 font-bold text-foreground text-lg">
+                      <th className="text-left p-1 md:p-3 font-bold text-foreground text-xs md:text-base">
                         Acciones
                       </th>
                     </tr>
@@ -166,35 +166,29 @@ export default function CategoriaContent({
                         key={producto.id}
                         className="border-t-2 border-border hover:bg-muted/20 transition-colors"
                       >
-                        <td className="p-6">
-                          <div className="font-semibold text-foreground text-lg">
-                            {producto.nombre}
-                          </div>
+                        <td className="p-1 md:p-3 font-semibold text-foreground text-xs md:text-base">
+                          {producto.nombre}
                         </td>
-                        <td className="p-6 text-muted-foreground text-lg">
+                        <td className="p-1 md:p-3 text-muted-foreground text-xs md:text-base hidden md:table-cell">
                           {producto.categoria}
                         </td>
-                        <td className="p-6 text-muted-foreground text-lg">
+                        <td className="p-1 md:p-3 text-muted-foreground text-xs md:text-base hidden md:table-cell">
                           {typeof producto.marca === "object"
                             ? producto.marca?.nombre
                             : producto.marca}
                         </td>
-                        <td className="p-6">
-                          <span className="font-bold text-success text-xl">
-                            ${producto.precioDolar?.toLocaleString() || "0"}
-                          </span>
+                        <td className="p-1 md:p-3 font-bold text-success text-xs md:text-lg">
+                          ${producto.precioDolar?.toLocaleString() || "0"}
                         </td>
-                        <td className="p-6">
-                          <span className="font-bold text-accent text-xl">
-                            {producto.precioBs?.toLocaleString() || "0"}
-                          </span>
+                        <td className="p-1 md:p-3 font-bold text-accent text-xs md:text-lg">
+                          {producto.precioBs?.toLocaleString() || "0"}
                         </td>
-                        <td className="p-6">
+                        <td className="p-1 md:p-3 text-muted-foreground text-xs md:text-base hidden md:table-cell">
                           {typeof producto.tipo === "object"
                             ? producto.tipo?.nombre
                             : producto.tipo}
                         </td>
-                        <td className="p-6 text-muted-foreground text-lg">
+                        <td className="p-1 md:p-3 text-muted-foreground text-xs md:text-base">
                           {typeof producto.tasa === "object"
                             ? producto.tasa?.nombre === "bcv"
                               ? "BCV"
@@ -203,12 +197,12 @@ export default function CategoriaContent({
                               : producto.tasa?.nombre
                             : producto.tasa}
                         </td>
-                        <td className="p-6">
+                        <td className="p-1 md:p-3">
                           <Link href={`/producto/${producto.id}/editar`}>
                             <Button
                               variant="outline"
-                              size="lg"
-                              className="border-2 border-accent text-accent hover:bg-accent hover:text-white bg-transparent"
+                              size="sm"
+                              className="border-2 border-accent text-accent hover:bg-accent hover:text-white bg-transparent text-xs md:text-base px-2 md:px-4 py-1 md:py-2"
                             >
                               Editar
                             </Button>
