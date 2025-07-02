@@ -31,7 +31,22 @@ export class MonedaService {
   }
 
   update(id: number, data: Partial<Moneda>) {
-    return this.monedaRepository.update(id, data);
+    const result = this.monedaRepository.update(id, data);
+    // Si la tasa fue actualizada, recalcular los precios de los productos que usan esta tasa
+    if (data.tasa !== undefined) {
+      const moneda = this.monedaRepository.findOne({ where: { id } });
+      if (moneda) {
+        const productos = this.productoRepository.find({
+          where: { tasa: { id: moneda.id } },
+          relations: ['tasa'],
+        });
+        for (const producto of productos) {
+          producto.precioBs = Number(producto.precioDolar) * moneda.tasa;
+          this.productoRepository.save(producto);
+        }
+      }
+    }
+    return result;
   }
 
   remove(id: number) {
@@ -106,6 +121,15 @@ export class MonedaService {
             tasa: nuevaTasa,
           });
           await this.monedaRepository.save(bcv);
+        }
+        // Recalcular precios en Bs de todos los productos que usan esta tasa
+        const productos = await this.productoRepository.find({
+          where: { tasa: { id: bcv.id } },
+          relations: ['tasa'],
+        });
+        for (const producto of productos) {
+          producto.precioBs = Number(producto.precioDolar) * nuevaTasa;
+          await this.productoRepository.save(producto);
         }
         return bcv;
       } else {

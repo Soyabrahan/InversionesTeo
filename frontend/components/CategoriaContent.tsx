@@ -153,6 +153,9 @@ export default function CategoriaContent({
                         Tipo
                       </th>
                       <th className="text-left p-6 font-bold text-foreground text-lg">
+                        Tasa
+                      </th>
+                      <th className="text-left p-6 font-bold text-foreground text-lg">
                         Acciones
                       </th>
                     </tr>
@@ -190,6 +193,15 @@ export default function CategoriaContent({
                           {typeof producto.tipo === "object"
                             ? producto.tipo?.nombre
                             : producto.tipo}
+                        </td>
+                        <td className="p-6 text-muted-foreground text-lg">
+                          {typeof producto.tasa === "object"
+                            ? producto.tasa?.nombre === "bcv"
+                              ? "BCV"
+                              : producto.tasa?.nombre === "modificado"
+                              ? "Modificada"
+                              : producto.tasa?.nombre
+                            : producto.tasa}
                         </td>
                         <td className="p-6">
                           <Link href={`/producto/${producto.id}/editar`}>
