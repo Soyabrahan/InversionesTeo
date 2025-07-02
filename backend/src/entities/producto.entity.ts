@@ -14,13 +14,19 @@ export class Producto {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => Marca, { eager: true })
-  @JoinColumn({ name: 'id_marca' })
-  marca: Marca;
+  @Column()
+  nombre: string;
 
-  @ManyToOne(() => Tipo, { eager: true })
+  @Column({ nullable: true })
+  descripcion?: string;
+
+  @ManyToOne(() => Marca, { eager: true, nullable: true })
+  @JoinColumn({ name: 'id_marca' })
+  marca?: Marca;
+
+  @ManyToOne(() => Tipo, { eager: true, nullable: true })
   @JoinColumn({ name: 'id_tipo' })
-  tipo: Tipo;
+  tipo?: Tipo;
 
   @ManyToOne(() => Moneda, { eager: true })
   @JoinColumn({ name: 'id_tasa' })
