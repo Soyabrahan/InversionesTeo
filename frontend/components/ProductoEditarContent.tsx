@@ -56,13 +56,22 @@ export default function ProductoEditarContent({ id }: { id: string }) {
     const precioDolar = Number(
       (form.elements.namedItem("precio") as HTMLInputElement).value
     );
+    const categoria = (form.elements.namedItem("categoria") as HTMLInputElement)
+      .value;
+    const marcaId = (form.elements.namedItem("marca") as HTMLInputElement)
+      .value;
+    const tipoId = (form.elements.namedItem("tipo") as HTMLInputElement).value;
+    const tasaId = (form.elements.namedItem("tasa") as HTMLInputElement).value;
     try {
-      const res = await fetch(`/api/productos/${id}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ nombre, descripcion, precioDolar, categoria }),
+      await productoService.update(Number(id), {
+        nombre,
+        descripcion,
+        precioDolar,
+        categoria,
+        marca: marcaId ? Number(marcaId) : undefined,
+        tipo: tipoId ? Number(tipoId) : undefined,
+        tasa: tasaId ? Number(tasaId) : undefined,
       });
-      if (!res.ok) throw new Error("Error al actualizar el producto");
       setMensaje("Producto actualizado exitosamente");
       // Opcional: router.back();
     } catch (err) {
@@ -113,6 +122,7 @@ export default function ProductoEditarContent({ id }: { id: string }) {
                 </Label>
                 <Input
                   id="nombre"
+                  name="nombre"
                   defaultValue={producto.nombre}
                   className="h-14 text-lg bg-background border-2 border-border focus:border-accent"
                 />
@@ -126,6 +136,7 @@ export default function ProductoEditarContent({ id }: { id: string }) {
                   Marca
                 </Label>
                 <Select
+                  name="marca"
                   defaultValue={
                     typeof producto.marca === "object" && producto.marca
                       ? String(producto.marca.id)
@@ -153,6 +164,7 @@ export default function ProductoEditarContent({ id }: { id: string }) {
                   Tipo
                 </Label>
                 <Select
+                  name="tipo"
                   defaultValue={
                     typeof producto.tipo === "object" && producto.tipo
                       ? String(producto.tipo.id)
@@ -180,6 +192,7 @@ export default function ProductoEditarContent({ id }: { id: string }) {
                   Tasa
                 </Label>
                 <Select
+                  name="tasa"
                   defaultValue={
                     typeof producto.tasa === "object" && producto.tasa
                       ? String(producto.tasa.id)
@@ -208,6 +221,7 @@ export default function ProductoEditarContent({ id }: { id: string }) {
                 </Label>
                 <Input
                   id="precio"
+                  name="precio"
                   type="number"
                   defaultValue={producto.precioDolar}
                   className="h-14 text-lg bg-background border-2 border-border focus:border-accent"
@@ -221,7 +235,11 @@ export default function ProductoEditarContent({ id }: { id: string }) {
                 >
                   Categoría
                 </Label>
-                <Select value={categoria} onValueChange={setCategoria}>
+                <Select
+                  name="categoria"
+                  value={categoria}
+                  onValueChange={setCategoria}
+                >
                   <SelectTrigger className="h-14 bg-background border-2 border-border">
                     <SelectValue placeholder="Seleccionar categoría" />
                   </SelectTrigger>
@@ -245,6 +263,7 @@ export default function ProductoEditarContent({ id }: { id: string }) {
               </Label>
               <Textarea
                 id="descripcion"
+                name="descripcion"
                 defaultValue={producto.descripcion}
                 className="min-h-32 text-lg bg-background border-2 border-border focus:border-accent resize-none"
               />

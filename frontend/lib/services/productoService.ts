@@ -7,9 +7,9 @@ export interface Producto {
   categoria?: string;
   precioDolar?: number;
   precioBs?: number;
-  marca?: { id: number; nombre: string } | string | null;
-  tipo?: { id: number; nombre: string } | string | null;
-  tasa?: { id: number; nombre: string; tasa: number } | string | null;
+  marca?: { id: number; nombre: string } | number | string | null;
+  tipo?: { id: number; nombre: string } | number | string | null;
+  tasa?: { id: number; nombre: string; tasa: number } | number | string | null;
 }
 
 export const productoService = {

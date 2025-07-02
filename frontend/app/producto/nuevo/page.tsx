@@ -23,6 +23,7 @@ import {
 } from "@/lib/services";
 import { CATEGORIAS } from "@/lib/categorias";
 import { useRouter } from "next/navigation";
+import { productoService } from "@/lib/services/productoService";
 
 export default function NuevoProductoPage() {
   const [marcas, setMarcas] = useState<Marca[]>([]);
@@ -52,16 +53,22 @@ export default function NuevoProductoPage() {
     const precioDolar = Number(
       (form.elements.namedItem("precio") as HTMLInputElement).value
     );
-    // Aquí puedes recoger los valores de marca, tipo y tasa si los necesitas
-    // Por simplicidad, solo muestro cómo enviar la categoría
-    // Agrega validaciones si lo deseas
+    const categoria = (form.elements.namedItem("categoria") as HTMLInputElement)
+      .value;
+    const marcaId = (form.elements.namedItem("marca") as HTMLInputElement)
+      .value;
+    const tipoId = (form.elements.namedItem("tipo") as HTMLInputElement).value;
+    const tasaId = (form.elements.namedItem("tasa") as HTMLInputElement).value;
     try {
-      const res = await fetch("/api/productos", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ nombre, descripcion, precioDolar, categoria }),
+      await productoService.create({
+        nombre,
+        descripcion,
+        precioDolar,
+        categoria,
+        marca: marcaId ? Number(marcaId) : undefined,
+        tipo: tipoId ? Number(tipoId) : undefined,
+        tasa: tasaId ? Number(tasaId) : undefined,
       });
-      if (!res.ok) throw new Error("Error al crear el producto");
       setMensaje("Producto creado exitosamente");
       // Opcional: router.back();
     } catch (err) {
@@ -110,6 +117,7 @@ export default function NuevoProductoPage() {
                 </Label>
                 <Input
                   id="nombre"
+                  name="nombre"
                   placeholder="Ej: Alimento Premium Perro Adulto"
                   className="h-14 text-lg bg-background border-2 border-border focus:border-accent"
                 />
@@ -122,7 +130,7 @@ export default function NuevoProductoPage() {
                 >
                   Marca
                 </Label>
-                <Select>
+                <Select name="marca">
                   <SelectTrigger className="h-14 bg-background border-2 border-border">
                     <SelectValue placeholder="Seleccionar marca" />
                   </SelectTrigger>
@@ -143,7 +151,7 @@ export default function NuevoProductoPage() {
                 >
                   Tipo
                 </Label>
-                <Select>
+                <Select name="tipo">
                   <SelectTrigger className="h-14 bg-background border-2 border-border">
                     <SelectValue placeholder="Seleccionar tipo" />
                   </SelectTrigger>
@@ -164,7 +172,7 @@ export default function NuevoProductoPage() {
                 >
                   Tasa
                 </Label>
-                <Select>
+                <Select name="tasa">
                   <SelectTrigger className="h-14 bg-background border-2 border-border">
                     <SelectValue placeholder="Seleccionar tasa" />
                   </SelectTrigger>
@@ -187,6 +195,7 @@ export default function NuevoProductoPage() {
                 </Label>
                 <Input
                   id="precio"
+                  name="precio"
                   type="number"
                   placeholder="0"
                   className="h-14 text-lg bg-background border-2 border-border focus:border-accent"
@@ -200,7 +209,11 @@ export default function NuevoProductoPage() {
                 >
                   Categoría
                 </Label>
-                <Select value={categoria} onValueChange={setCategoria}>
+                <Select
+                  name="categoria"
+                  value={categoria}
+                  onValueChange={setCategoria}
+                >
                   <SelectTrigger className="h-14 bg-background border-2 border-border">
                     <SelectValue placeholder="Seleccionar categoría" />
                   </SelectTrigger>
@@ -224,6 +237,7 @@ export default function NuevoProductoPage() {
               </Label>
               <Textarea
                 id="descripcion"
+                name="descripcion"
                 placeholder="Descripción adicional del producto..."
                 className="min-h-32 text-lg bg-background border-2 border-border focus:border-accent resize-none"
               />
