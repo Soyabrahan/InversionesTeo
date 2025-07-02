@@ -5,10 +5,8 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   app.enableCors({
-    origin: [
-      'http://localhost:3000', // desarrollo local
-      'https://inversionesteo.onrender.com', // reemplaza por tu dominio real en producción
-    ],
+    origin: '*', // Permitir cualquier origen para pruebas. Cambia a tu dominio real en producción.
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
   });
 

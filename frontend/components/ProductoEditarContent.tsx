@@ -73,9 +73,12 @@ export default function ProductoEditarContent({ id }: { id: string }) {
         tasa: tasaId ? Number(tasaId) : undefined,
       });
       setMensaje("Producto actualizado exitosamente");
-      // Opcional: router.back();
-    } catch (err) {
-      setError("Hubo un error al actualizar el producto");
+      router.push("/");
+    } catch (err: any) {
+      setError(
+        "Hubo un error al actualizar el producto: " +
+          (err?.response?.data?.message || err.message)
+      );
     }
   };
 

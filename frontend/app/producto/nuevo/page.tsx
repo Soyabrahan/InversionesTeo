@@ -60,7 +60,7 @@ export default function NuevoProductoPage() {
     const tipoId = (form.elements.namedItem("tipo") as HTMLInputElement).value;
     const tasaId = (form.elements.namedItem("tasa") as HTMLInputElement).value;
     try {
-      await productoService.create({
+      const created = await productoService.create({
         nombre,
         descripcion,
         precioDolar,
@@ -70,9 +70,14 @@ export default function NuevoProductoPage() {
         tasa: tasaId ? Number(tasaId) : undefined,
       });
       setMensaje("Producto creado exitosamente");
-      // Opcional: router.back();
-    } catch (err) {
-      setError("Hubo un error al crear el producto");
+      if (created && created.id) {
+        router.push(`/producto/${created.id}/editar`);
+      }
+    } catch (err: any) {
+      setError(
+        "Hubo un error al crear el producto: " +
+          (err?.response?.data?.message || err.message)
+      );
     }
   };
 
