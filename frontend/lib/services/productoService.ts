@@ -2,14 +2,14 @@ import api from "../api";
 
 export interface Producto {
   id?: number;
-  nombre: string;
-  marca: string;
-  precio: number;
-  stock: number;
-  stockMinimo?: number;
-  tipo: string;
-  categoria: string;
+  nombre?: string;
   descripcion?: string;
+  categoria?: string;
+  precioDolar?: number;
+  precioBs?: number;
+  marca?: { id: number; nombre: string } | string | null;
+  tipo?: { id: number; nombre: string } | string | null;
+  tasa?: { id: number; nombre: string; tasa: number } | string | null;
 }
 
 export const productoService = {

@@ -137,10 +137,16 @@ export default function CategoriaContent({
                         Producto
                       </th>
                       <th className="text-left p-6 font-bold text-foreground text-lg">
+                        Categoría
+                      </th>
+                      <th className="text-left p-6 font-bold text-foreground text-lg">
                         Marca
                       </th>
                       <th className="text-left p-6 font-bold text-foreground text-lg">
-                        Precio
+                        Precio$
+                      </th>
+                      <th className="text-left p-6 font-bold text-foreground text-lg">
+                        PrecioBs
                       </th>
                       <th className="text-left p-6 font-bold text-foreground text-lg">
                         Tipo
@@ -162,32 +168,27 @@ export default function CategoriaContent({
                           </div>
                         </td>
                         <td className="p-6 text-muted-foreground text-lg">
+                          {producto.categoria}
+                        </td>
+                        <td className="p-6 text-muted-foreground text-lg">
                           {typeof producto.marca === "object"
                             ? producto.marca?.nombre
                             : producto.marca}
                         </td>
                         <td className="p-6">
                           <span className="font-bold text-success text-xl">
-                            ${producto.precio?.toLocaleString() || "0"}
+                            ${producto.precioDolar?.toLocaleString() || "0"}
                           </span>
                         </td>
                         <td className="p-6">
-                          <Badge
-                            variant={
-                              producto.tipo === "alta_genetica"
-                                ? "default"
-                                : "secondary"
-                            }
-                            className={`text-base px-4 py-2 ${
-                              producto.tipo === "alta_genetica"
-                                ? "bg-accent text-white"
-                                : "bg-muted text-foreground"
-                            }`}
-                          >
-                            {producto.tipo === "alta_genetica"
-                              ? "Alta Genética"
-                              : "Genérico"}
-                          </Badge>
+                          <span className="font-bold text-accent text-xl">
+                            {producto.precioBs?.toLocaleString() || "0"}
+                          </span>
+                        </td>
+                        <td className="p-6">
+                          {typeof producto.tipo === "object"
+                            ? producto.tipo?.nombre
+                            : producto.tipo}
                         </td>
                         <td className="p-6">
                           <Link href={`/producto/${producto.id}/editar`}>
