@@ -6,6 +6,7 @@ import { monedaService, Moneda } from "@/lib/services/monedaService";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import axios from "axios";
+import { App } from "@capacitor/app";
 
 const categorias = [
   {
@@ -81,6 +82,29 @@ export default function HomePage() {
       }
     };
     fetchTasas();
+
+    const setup = async () => {
+      const handler = await App.addListener("backButton", () => {
+        if (window.location.pathname === "/") {
+          if (window.confirm("¿Desea salir de la aplicación?")) {
+            App.exitApp();
+          }
+        } else {
+          window.history.back();
+        }
+      });
+      // Cleanup
+      return () => {
+        handler.remove();
+      };
+    };
+    let cleanup: (() => void) | undefined;
+    setup().then((fn) => {
+      cleanup = fn;
+    });
+    return () => {
+      if (cleanup) cleanup();
+    };
   }, []);
 
   const actualizarBCV = async () => {
