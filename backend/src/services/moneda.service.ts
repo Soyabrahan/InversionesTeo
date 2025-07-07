@@ -31,6 +31,9 @@ export class MonedaService {
   }
 
   async update(id: number, data: Partial<Moneda>) {
+    if (!id || isNaN(Number(id))) {
+      throw new Error('ID de moneda inválido');
+    }
     // Obtener la tasa anterior
     const monedaAnterior = await this.monedaRepository.findOne({
       where: { id },
