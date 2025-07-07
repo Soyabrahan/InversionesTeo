@@ -251,7 +251,11 @@ export default function HomePage() {
             )}
           </div>
         </div>
-        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-8">
+        {/* Sección de Categorías */}
+        <h2 className="text-lg md:text-2xl font-bold mb-4 mt-8 text-foreground">
+          Categorías
+        </h2>
+        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-8 mb-8">
           {categorias.map((categoria) => {
             const IconComponent = categoria.icono;
             return (
@@ -280,6 +284,12 @@ export default function HomePage() {
               </Link>
             );
           })}
+        </div>
+        {/* Sección de Gestión */}
+        <h2 className="text-lg md:text-2xl font-bold mb-4 mt-8 text-foreground">
+          Gestión
+        </h2>
+        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-8">
           {/* Botón para Marca */}
           <Link href="/marca" className="group">
             <div className="bg-card hover:bg-card/90 border border-border rounded-2xl p-4 md:p-10 transition-all duration-300 hover:scale-105 hover:shadow-2xl cursor-pointer min-h-[120px] md:min-h-[200px] flex flex-col items-center justify-center">
