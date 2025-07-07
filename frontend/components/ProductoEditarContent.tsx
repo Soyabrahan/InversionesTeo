@@ -43,6 +43,12 @@ export default function ProductoEditarContent({ id }: { id: string }) {
     productoService.getById(Number(id)).then(setProducto);
   }, [id]);
 
+  useEffect(() => {
+    if (producto?.categoria) {
+      setCategoria(producto.categoria);
+    }
+  }, [producto]);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setMensaje(null);
