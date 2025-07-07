@@ -12,6 +12,14 @@ export class Moneda {
   @Column('decimal', { precision: 15, scale: 6 })
   tasa: number;
 
+  @Column({
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP',
+    onUpdate: 'CURRENT_TIMESTAMP',
+    nullable: false,
+  })
+  updatedAt: Date;
+
   @OneToMany(() => Producto, (producto) => producto.tasa)
   productos: Producto[];
 }

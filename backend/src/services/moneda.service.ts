@@ -111,6 +111,21 @@ export class MonedaService {
 
   async actualizarTasaBCVManual() {
     try {
+      // Buscar la moneda BCV
+      let bcv = await this.monedaRepository.findOne({
+        where: { nombre: 'bcv' },
+      });
+      const ahora = new Date();
+      const seisHorasMs = 6 * 60 * 60 * 1000;
+      if (
+        bcv &&
+        bcv.updatedAt &&
+        ahora.getTime() - new Date(bcv.updatedAt).getTime() < seisHorasMs
+      ) {
+        // Si la tasa fue actualizada en las últimas 6 horas, devolver la guardada
+        return bcv;
+      }
+      // Si no existe o está desactualizada, consultar la API externa
       const url = 'https://pydolarve.org/api/v2/dollar';
       const response$ = this.httpService.get(url);
       const response = await lastValueFrom(response$);
@@ -122,15 +137,15 @@ export class MonedaService {
         data.monitors.bcv.price
       ) {
         const nuevaTasa = parseFloat(data.monitors.bcv.price);
-        let bcv = await this.monedaRepository.findOne({ where: { id: 1 } });
         if (bcv) {
           bcv.tasa = nuevaTasa;
+          bcv.updatedAt = new Date();
           await this.monedaRepository.save(bcv);
         } else {
           bcv = this.monedaRepository.create({
-            id: 1,
             nombre: 'bcv',
             tasa: nuevaTasa,
+            updatedAt: new Date(),
           });
           await this.monedaRepository.save(bcv);
         }

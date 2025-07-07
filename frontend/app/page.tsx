@@ -88,17 +88,12 @@ export default function HomePage() {
     setError(null);
     setLoading(true);
     try {
-      // 1. Obtener la tasa BCV desde la API externa
-      const { data } = await axios.get("https://pydolarve.org/api/v2/dollar");
-      const nuevaTasa = data?.monitors?.bcv?.price;
-      if (!nuevaTasa) throw new Error("No se pudo obtener la tasa BCV externa");
-      // 2. Actualizar la tasa BCV en el backend
+      // Solo llama al backend, que ya maneja la lógica de actualización
       const res = await fetch(
         "https://inversiones-teo-backend.onrender.com/monedas/bcv/actualizar",
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ tasa: nuevaTasa }),
         }
       );
       if (!res.ok) throw new Error("No se pudo actualizar la tasa BCV");
@@ -168,6 +163,10 @@ export default function HomePage() {
             <h2 className="text-xl font-bold mb-2 text-foreground">Tasa BCV</h2>
             <div className="text-3xl font-bold text-accent mb-4">
               {bcv ? Number(bcv.tasa).toFixed(2) : "-"}
+            </div>
+            <div className="text-xs text-muted-foreground mb-2">
+              Última actualización:{" "}
+              {bcv?.updatedAt ? new Date(bcv.updatedAt).toLocaleString() : "-"}
             </div>
             <Button
               onClick={actualizarBCV}

@@ -4,6 +4,7 @@ export interface Moneda {
   id?: number;
   nombre: string;
   tasa: number;
+  updatedAt?: string; // Fecha de última actualización
 }
 
 export const monedaService = {
