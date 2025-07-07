@@ -46,7 +46,10 @@ export default function ProductoEditarContent({ id }: { id: string }) {
   useEffect(() => {
     if (producto?.categoria) {
       const normalizada = producto.categoria.trim().toLowerCase();
-      setCategoria(normalizada);
+      const categoriaValida = CATEGORIAS.find(
+        (cat) => cat.toLowerCase() === normalizada
+      );
+      setCategoria(categoriaValida || "");
     }
   }, [producto]);
 
