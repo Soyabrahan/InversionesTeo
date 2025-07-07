@@ -207,6 +207,7 @@ export default function NuevoProductoPage() {
                   type="number"
                   placeholder="0"
                   className="h-14 text-lg bg-background border-2 border-border focus:border-accent"
+                  step="0.01"
                 />
               </div>
 

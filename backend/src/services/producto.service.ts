@@ -2,16 +2,37 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Producto } from '../entities/producto.entity';
+import { Moneda } from '../entities/moneda.entity';
 
 @Injectable()
 export class ProductoService {
   constructor(
     @InjectRepository(Producto)
     private readonly productoRepository: Repository<Producto>,
+    @InjectRepository(Moneda)
+    private readonly monedaRepository: Repository<Moneda>,
   ) {}
 
-  create(data: Partial<Producto>) {
-    const producto = this.productoRepository.create(data);
+  async create(data: Partial<Producto>) {
+    // Buscar la tasa correspondiente
+    let tasa: Moneda | undefined;
+    if (data.tasa && typeof data.tasa === 'object' && 'id' in data.tasa) {
+      tasa = await this.monedaRepository.findOne({
+        where: { id: (data.tasa as any).id },
+      });
+    } else if (typeof data.tasa === 'number') {
+      tasa = await this.monedaRepository.findOne({ where: { id: data.tasa } });
+    }
+    if (!tasa) {
+      throw new Error('No se encontró la tasa para calcular el precio en Bs');
+    }
+    // Calcular el precio en Bs
+    const precioBs = Number(data.precioDolar) * Number(tasa.tasa);
+    const producto = this.productoRepository.create({
+      ...data,
+      precioBs,
+      tasa,
+    });
     return this.productoRepository.save(producto);
   }
 

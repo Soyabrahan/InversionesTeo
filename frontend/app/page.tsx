@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { monedaService, Moneda } from "@/lib/services/monedaService";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import axios from "axios";
 
 const categorias = [
   {
@@ -87,14 +88,22 @@ export default function HomePage() {
     setError(null);
     setLoading(true);
     try {
-      // Llama al endpoint que actualizará la tasa BCV en el backend
+      // 1. Obtener la tasa BCV desde la API externa
+      const { data } = await axios.get("https://pydolarve.org/api/v2/dollar");
+      const nuevaTasa = data?.monitors?.bcv?.price;
+      if (!nuevaTasa) throw new Error("No se pudo obtener la tasa BCV externa");
+      // 2. Actualizar la tasa BCV en el backend
       const res = await fetch(
         "https://inversiones-teo-backend.onrender.com/monedas/bcv/actualizar",
-        { method: "PUT" }
+        {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ tasa: nuevaTasa }),
+        }
       );
       if (!res.ok) throw new Error("No se pudo actualizar la tasa BCV");
-      const data = await res.json();
-      setBcv(data);
+      const dataBackend = await res.json();
+      setBcv(dataBackend);
       setMensaje("Tasa BCV actualizada");
     } catch (e) {
       setError("Error al actualizar la tasa BCV");
@@ -111,10 +120,17 @@ export default function HomePage() {
       if (!modificable) throw new Error("No hay tasa modificable");
       const nuevaTasa = Number(editTasa);
       if (isNaN(nuevaTasa) || nuevaTasa <= 0) throw new Error("Tasa inválida");
-      const updated = await monedaService.update(modificable.id!, {
+      await monedaService.update(modificable.id!, {
         tasa: nuevaTasa,
       });
-      setModificable(updated);
+      // Hacer GET para obtener el valor actualizado real
+      const actualizado = await monedaService.getById(modificable.id!);
+      setModificable(actualizado);
+      setEditTasa(
+        actualizado.tasa !== undefined && actualizado.tasa !== null
+          ? String(actualizado.tasa)
+          : ""
+      );
       setMensaje("Tasa modificable actualizada");
       setEditando(false);
     } catch (e) {
@@ -151,7 +167,7 @@ export default function HomePage() {
           <div className="bg-card border border-border rounded-2xl p-8 flex flex-col items-center justify-center shadow-lg">
             <h2 className="text-xl font-bold mb-2 text-foreground">Tasa BCV</h2>
             <div className="text-3xl font-bold text-accent mb-4">
-              {bcv ? bcv.tasa : "-"}
+              {bcv ? Number(bcv.tasa).toFixed(2) : "-"}
             </div>
             <Button
               onClick={actualizarBCV}
@@ -186,7 +202,11 @@ export default function HomePage() {
                     variant="outline"
                     onClick={() => {
                       setEditTasa(
-                        modificable?.tasa ? String(modificable.tasa) : ""
+                        modificable &&
+                          typeof modificable.tasa === "number" &&
+                          !isNaN(modificable.tasa)
+                          ? String(modificable.tasa)
+                          : ""
                       );
                       setEditando(false);
                     }}
@@ -199,7 +219,31 @@ export default function HomePage() {
             ) : (
               <>
                 <div className="text-3xl font-bold text-accent mb-4">
-                  {modificable ? modificable.tasa : "-"}
+                  {(() => {
+                    const tasaStr =
+                      modificable &&
+                      modificable.tasa !== undefined &&
+                      modificable.tasa !== null
+                        ? String(modificable.tasa)
+                        : "";
+                    const editStr =
+                      editTasa !== undefined && editTasa !== null
+                        ? String(editTasa)
+                        : "";
+                    const tasaNum =
+                      tasaStr !== "" && !isNaN(Number(tasaStr))
+                        ? Number(tasaStr)
+                        : null;
+                    const editNum =
+                      editStr !== "" && !isNaN(Number(editStr))
+                        ? Number(editStr)
+                        : null;
+                    if (tasaNum !== null && !isNaN(tasaNum))
+                      return tasaNum.toFixed(2);
+                    if (editNum !== null && !isNaN(editNum))
+                      return editNum.toFixed(2);
+                    return "No disponible";
+                  })()}
                 </div>
                 <Button onClick={() => setEditando(true)} className="w-full">
                   Editar

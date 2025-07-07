@@ -31,9 +31,17 @@ export class MonedaService {
   }
 
   async update(id: number, data: Partial<Moneda>) {
+    // Obtener la tasa anterior
+    const monedaAnterior = await this.monedaRepository.findOne({
+      where: { id },
+    });
     const result = await this.monedaRepository.update(id, data);
-    // Si la tasa fue actualizada, recalcular los precios de los productos que usan esta tasa
-    if (data.tasa !== undefined) {
+    // Si la tasa fue actualizada y realmente cambió, recalcular los precios de los productos que usan esta tasa
+    if (
+      data.tasa !== undefined &&
+      monedaAnterior &&
+      Number(data.tasa) !== Number(monedaAnterior.tasa)
+    ) {
       const moneda = await this.monedaRepository.findOne({ where: { id } });
       if (moneda) {
         const productos = await this.productoRepository.find({
@@ -41,7 +49,8 @@ export class MonedaService {
           relations: ['tasa'],
         });
         for (const producto of productos) {
-          producto.precioBs = Number(producto.precioDolar) * moneda.tasa;
+          producto.precioBs =
+            Number(producto.precioDolar) * Number(moneda.tasa);
           await this.productoRepository.save(producto);
         }
       }
