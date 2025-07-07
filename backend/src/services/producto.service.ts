@@ -17,11 +17,15 @@ export class ProductoService {
     // Buscar la tasa correspondiente
     let tasa: Moneda | undefined;
     if (data.tasa && typeof data.tasa === 'object' && 'id' in data.tasa) {
-      tasa = await this.monedaRepository.findOne({
+      const encontrada = await this.monedaRepository.findOne({
         where: { id: (data.tasa as any).id },
       });
+      tasa = encontrada === null ? undefined : encontrada;
     } else if (typeof data.tasa === 'number') {
-      tasa = await this.monedaRepository.findOne({ where: { id: data.tasa } });
+      const encontrada = await this.monedaRepository.findOne({
+        where: { id: data.tasa },
+      });
+      tasa = encontrada === null ? undefined : encontrada;
     }
     if (!tasa) {
       throw new Error('No se encontró la tasa para calcular el precio en Bs');
