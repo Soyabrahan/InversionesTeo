@@ -4,7 +4,10 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="393c5b7f-e285-4a82-b637-6187c0403c31" name="Changes" comment="" />
+    <list default="true" id="fc0ba2b6-8690-4cd3-9236-4a4d4287ff15" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/app/src/main/java/com/tuempresa/inversionesteo/MainActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/src/main/java/com/tuempresa/inversionesteo/MainActivity.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -17,15 +20,17 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
   </component>
   <component name="ProjectColorInfo"><![CDATA[{
+  "customColor": "",
   "associatedIndex": 4
 }]]></component>
-  <component name="ProjectId" id="2zYRvudGJWEtRIIw7TnzD4Ru2ZX" />
+  <component name="ProjectId" id="2zYXx3Mm7VSOuBRbEboBNwT0pxP" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "AnalyzeApkAction.lastApkPath": "C:/Users/abrah/Documents/programacion/proyectos/Personal/InversionesTeo/frontend/webview-app",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.cidr.known.project.marker": "true",
     "RunOnceActivity.git.unshallow": "true",
@@ -40,11 +45,11 @@
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="393c5b7f-e285-4a82-b637-6187c0403c31" name="Changes" comment="" />
-      <created>1751906253995</created>
+      <changelist id="fc0ba2b6-8690-4cd3-9236-4a4d4287ff15" name="Changes" comment="" />
+      <created>1751909224860</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1751906253995</updated>
+      <updated>1751909224860</updated>
     </task>
     <servers />
   </component>
