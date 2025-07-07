@@ -259,22 +259,24 @@ export default function ProductoEditarContent({ id }: { id: string }) {
                 >
                   Categoría
                 </Label>
-                <Select
-                  name="categoria"
-                  value={categoria}
-                  onValueChange={setCategoria}
-                >
-                  <SelectTrigger className="h-14 bg-background border-2 border-border">
-                    <SelectValue placeholder="Seleccionar categoría" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {CATEGORIAS.map((cat) => (
-                      <SelectItem key={cat} value={cat}>
-                        {cat.charAt(0).toUpperCase() + cat.slice(1)}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                {categoria && (
+                  <Select
+                    name="categoria"
+                    value={categoria}
+                    onValueChange={setCategoria}
+                  >
+                    <SelectTrigger className="h-14 bg-background border-2 border-border">
+                      <SelectValue placeholder="Seleccionar categoría" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {CATEGORIAS.map((cat) => (
+                        <SelectItem key={cat} value={cat}>
+                          {cat.charAt(0).toUpperCase() + cat.slice(1)}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                )}
               </div>
             </div>
 
