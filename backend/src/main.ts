@@ -1,17 +1,24 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
+import { INestApplication } from '@nestjs/common';
 
-async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+let app: INestApplication;
 
-  app.enableCors({
+async function bootstrap(): Promise<INestApplication> {
+  const nestApp = await NestFactory.create(AppModule);
+  nestApp.enableCors({
     origin: '*', // Permitir cualquier origen para pruebas. Cambia a tu dominio real en producción.
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
   });
-
-  await app.listen(process.env.PORT ?? 3000);
+  await nestApp.init();
+  return nestApp;
 }
-bootstrap();
 
-export default bootstrap;
+export default async (req, res) => {
+  if (!app) {
+    app = await bootstrap();
+  }
+  const server = app.getHttpAdapter().getInstance();
+  server(req, res);
+};
